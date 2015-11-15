@@ -12,7 +12,6 @@ Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` files
 ## :construction_worker: Todos
 - Properly pull in mscgen_js (see mscgen_js issue [publish to npm](https://github.com/sverweij/mscgen_js/issues/213))
 - Decent test coverage
-- Get scrolling to work again
 - Bundle [language-mscgen](https://atom.io/packages/language-mscgen)?
 
 ## License information
