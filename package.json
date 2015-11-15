@@ -1,0 +1,35 @@
+{
+  "name": "mscgen-preview",
+  "version": "0.0.0",
+  "description": "Open a rendered version of the MscGen in the current editor with `ctrl-shift-G`.",
+  "keywords": [
+    "mscgen",
+    "sequence chart",
+    "preview"
+  ],
+  "main": "./lib/main",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sverweij/atom-mscgen-preview"
+  },
+  "license": "GPL-3.0",
+  "engines": {
+    "atom": "*"
+  },
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "atom-space-pen-views": "2.0.0",
+    "fs-plus": "2.0.0",
+    "grim": "2.0.0",
+    "underscore-plus": "1.0.0",
+    "wrench": "1.5.0"
+  },
+  "devDependencies": {
+    "amdefine": "^1.0.0",
+    "coffeelint": "1.9.7",
+    "temp": "0.8.1"
+  },
+  "bugs": {
+    "url": "https://github.com/sverweij/atom-mscgen-preview/issues"
+  }
+}

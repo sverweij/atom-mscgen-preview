@@ -1,0 +1,10 @@
+'menu': [
+  'label': 'Packages'
+  'submenu': [
+    'label': 'MscGen Preview'
+    'submenu': [
+      'label': 'Toggle Preview'
+      'command': 'mscgen-preview:toggle'
+    ]
+  ]
+]

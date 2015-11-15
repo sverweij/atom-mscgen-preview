@@ -1,0 +1,31 @@
+.mscgen-preview {
+    color: black;
+    background-color: white;
+    padding-top:2em;
+    
+    atom-text-editor {
+      // only show scrollbars on hover
+      .scrollbars-visible-always &::shadow {
+        .vertical-scrollbar,
+        .horizontal-scrollbar {
+          visibility: hidden;
+        }
+      }
+      .scrollbars-visible-always &:hover::shadow {
+        .vertical-scrollbar,
+        .horizontal-scrollbar {
+          visibility: visible;
+        }
+      }
+    }
+}
+
+.mscgen-spinner {
+  margin: auto;
+  background-image: url(images/octocat-spinner-128.gif);
+  background-repeat: no-repeat;
+  background-size: 64px;
+  background-position: top center;
+  padding-top: 70px;
+  text-align: center;
+}
