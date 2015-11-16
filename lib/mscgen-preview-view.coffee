@@ -118,14 +118,6 @@ class MscGenPreviewView extends ScrollView
       @disposables.add @editor.getBuffer().onDidReload ->
         changeHandler() unless atom.config.get 'mscgen-preview.liveUpdate'
 
-    @disposables.add atom.config.onDidChange 'mscgen-preview.breakOnSingleNewline', changeHandler
-
-    @disposables.add atom.config.observe 'mscgen-preview.useGitHubStyle', (useGitHubStyle) =>
-      if useGitHubStyle
-        @element.setAttribute('data-use-github-style', '')
-      else
-        @element.removeAttribute('data-use-github-style')
-
   renderMsc: ->
     @showLoading() unless @loaded
     @getMscSource().then (source) => @renderMscText(source) if source?
