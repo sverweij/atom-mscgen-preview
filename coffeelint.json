@@ -106,7 +106,7 @@
     "level": "error"
   },
   "no_trailing_whitespace": {
-    "level": "error",
+    "level": "warn",
     "allowed_in_comments": false,
     "allowed_in_empty_lines": true
   },
