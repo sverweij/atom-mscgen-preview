@@ -1,0 +1,22 @@
+msc {
+    # options
+    wordwraparcs=on;
+    
+    # entities
+    c [label="Consumer"],
+    api [label="Super API"];
+    
+    # arcs
+    c =>> api [label="GET /"];
+    api >> c [label="interfaces"];
+    
+    c loop api [label="for each interface"] {
+        c =>> api [label="GET interface"];
+        c alt api [label="Happy day"] {
+            api >> c [label="200: response"];
+            --- [label="error"];
+            api >> c [label="error"];
+        };
+    };
+    
+}

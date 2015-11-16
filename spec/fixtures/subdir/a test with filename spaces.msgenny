@@ -1,0 +1,11 @@
+wordwraparcs=1, hscale=1.2, width=400;
+nt: nicktimko, 
+sv: sverweij;
+
+nt =>> sv: It would be neat to have
+           rendering with live-update
+           inside Atom;
+sv >> nt: "Yes! that would be\nawesome.";
+sv =>> sv: "8-|";
+...;
+sv =>> nt: something like this?;

@@ -1,0 +1,12 @@
+msc {
+    # options
+    wordwraparcs=on;
+    
+    # entities
+    a [label="Sender"],
+    b [label="Receiver"];
+
+    # arcs
+    a =>> b [label="Message"];
+    b >> a [label="Response"];    
+}
