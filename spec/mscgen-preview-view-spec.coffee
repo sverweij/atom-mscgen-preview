@@ -12,13 +12,12 @@ describe "MscGenPreviewView", ->
     jasmine.attachToDOM(preview.element)
 
     waitsForPromise ->
-      atom.packages.activatePackage('language-ruby')
+      atom.packages.activatePackage("mscgen-preview")
 
     waitsForPromise ->
-      atom.packages.activatePackage('language-javascript')
-
-    waitsForPromise ->
-      atom.packages.activatePackage('mscgen-preview')
+      require('atom-package-deps').install(require('../package.json').name)
+        .then ->
+          atom.packages.activatePackage('language-mscgen')
 
   afterEach ->
     preview.destroy()

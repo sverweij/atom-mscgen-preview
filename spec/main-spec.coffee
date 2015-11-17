@@ -9,6 +9,7 @@ describe "MscGen preview package", ->
   [workspaceElement, preview] = []
 
   beforeEach ->
+    
     fixturesPath = path.join(__dirname, 'fixtures')
     tempPath = temp.mkdirSync('atom')
     wrench.copyDirSyncRecursive(fixturesPath, tempPath, forceDelete: true)
@@ -23,7 +24,9 @@ describe "MscGen preview package", ->
       atom.packages.activatePackage("mscgen-preview")
 
     waitsForPromise ->
-      atom.packages.activatePackage('language-mscgen')
+      require('atom-package-deps').install(require('../package.json').name)
+        .then ->
+          atom.packages.activatePackage('language-mscgen')
 
   expectPreviewInSplitPane = ->
     runs ->
