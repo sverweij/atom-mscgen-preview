@@ -1,14 +1,73 @@
+/* multiline comment  outside msc */
+// starter MscGen with liberate comments to help you along 
+// with creating charts without having to remember every keyword
 msc {
-    # options
-    wordwraparcs=on;
-    
-    # entities
-    fred [label="Fred"],
-    barney [label="Barney"];
-    
-    # arcs
-    fred =>> barney [label="can you make something from this rock?"];
-    barney >> fred [label="Bowling ball"];
-    fred =>> barney [label="Yabba dabba dooooo!"];
-    
+  # options - separate with , end with ;
+  #
+  # arcgradient=20, # slopes the arcs. 
+  # hscale="0.8", # horizontally squeezes or stretches the chart
+  # width="600", # sets the maximum width of the chart (pixels)
+  # watermark="a watermark", # adds a watermark (xù only!)
+  wordwraparcs/*comment in an option*/=on, # automatically wrap labels on arcs. Default: off
+  hscale=0.9;
+
+  # entities
+  # 
+  # possible attributes
+  #   label
+  #   textcolor, textbgcolor, linecolor # as advertised
+  # 
+  # these color the arcs departing from the entity:
+  #   arctextcolor, arctextbgcolor, arclinecolor
+  #          
+  
+  cust [label="Customer"],
+  shop [label=Shop_23, textbgcolour="#666666", # asdfasdf
+  textcolour=white, linecolor="blue"],
+  "delivery service",
+  bank;
+
+/* multiline comment insde msc */
+  # arcs
+  #
+  # attributes: 
+  #   label, textcolor, textbgcolor, linecolor # as advertised
+  #   arcskip # arc starts here, ends the specified amount 
+  #           # of lines lower.
+  #           # use e.g. arcskip="1" to end on the next line.
+  # 
+  # arc types: ->, =>, =>>, >>, -x, :>,
+  #            <->, <=>, <<=>>, <<>>, <:>
+  #            --, ::, ..
+  #            note, box, abox, rbox
+
+  cust => shop [label=/*comment*/"order(thing)"];
+  shop -> "delivery service" [label="deliver(thing)"];
+  "delivery service" =>> cust [label="thing"];
+  cust >> "delivery service" [label="OK"];
+  
+    "delivery service" => shop [label="delivered!"];
+  shop => cust [label="bill"];
+  cust => bank [label="pay(bill, shop)"];
+  bank => shop [label="€"];
+  cust rbox cust [label="done :-)"];
+  shop =>> * [label="happy now ..."];
+  shop -> *;
+  
+  # inline expressions (xù only):
+  # xù only  : alt, else, opt, break, critical,
+  #            neg, strict, seq, assert, exc
+  #            ref, consider, ignore, loop, par
+  #
+  # # e.g. to describe to alternatives :
+  # shop alt bank [label="payment OK"]{
+  #
+  #   shop =>> bank [label="Thanks dude!"];
+  # 
+  #   --- [label="payment NOK"]; # split alternatives with ---
+  #
+  #   shop =>> bank [label="that was not enough :-("];
+  #   bank >> shop [label="Sorry. Bye."];
+  #   shop rbox shop [label="payment pending process"];
+  # };
 }
