@@ -1,0 +1,242 @@
+name: "MsGenny"
+scopeName: "source.msgenny"
+foldingStartMarker: "{s*$"
+foldingStopMarker: "^s*}"
+fileTypes: [
+  "msgenny"
+]
+patterns: [
+  {
+    include: "#option"
+  }
+  {
+    include: "#punctuation"
+  }
+  {
+    include: "#comment"
+  }
+  {
+    include: "#arctype"
+  }
+  {
+    include: "#attributelist"
+  }
+  {
+    include: "#identifier"
+  }
+  {
+    include: "#illegalalien"
+  }
+]
+repository:
+  punctuation:
+    match: "(,|;)"
+    name: "punctuation.separator.msgenny"
+  illegalalien:
+    comment: "include as last pattern to declare everything different from spaces illegal"
+    match: "\\S"
+    name: "invalid.illegal.msgenny"
+  number:
+    comment: "handles integer and decimal numbers"
+    match: "-?(?=[1-9]|0(?!\\d))\\d+(\\.\\d+)?([eE][+-]?\\d+)?"
+    name: "constant.numeric.msgenny"
+  commentBlock:
+    comment: "e.g. /* yadda */"
+    begin: "/\\*"
+    captures:
+      "0":
+        name: "punctuation.definition.comment.msgenny"
+    end: "\\*/"
+    name: "comment.block.msgenny"
+  commentLineSlash:
+    comment: "e.g. // yadda"
+    begin: "(^[ \\t]+)?(?=//)"
+    beginCaptures:
+      "1":
+        name: "punctuation.whitespace.comment.leading.msgenny"
+    end: "(?!\\G)"
+    patterns: [
+      {
+        begin: "//"
+        beginCaptures:
+          "0":
+            name: "punctuation.definition.comment.msgenny"
+        end: "\\n"
+        name: "comment.line.double-slash.msgenny"
+      }
+    ]
+  commentLineHash:
+    comment: "e.g. # yadda"
+    begin: "(^[ \\t]+)?(?=#)"
+    beginCaptures:
+      "1":
+        name: "punctuation.whitespace.comment.leading.msgenny"
+    end: "(?!\\G)"
+    patterns: [
+      {
+        begin: "#"
+        beginCaptures:
+          "0":
+            name: "punctuation.definition.comment.msgenny"
+        end: "\\n"
+        name: "comment.line.number-sign.msgenny"
+      }
+    ]
+  comment:
+    patterns: [
+      {
+        include: "#commentBlock"
+      }
+      {
+        include: "#commentLineSlash"
+      }
+      {
+        include: "#commentLineHash"
+      }
+    ]
+  identifier:
+    patterns: [
+      {
+        comment: "identifier - bare bones. In msgenny * (\"every entity\") can be used as a special identifier as well"
+        match: "([^;, \\\"\\t\\n\\r=\\-><:\\{\\*])+|(\\*)"
+        name: "variable.identifier.msgenny"
+      }
+      {
+        comment: "identifer - quoted. Basically a string, but we can't duplicate that"
+        begin: "\""
+        end: "\""
+        name: "variable.identifier.msgenny"
+        patterns: [
+          {
+            match: "\\\\."
+            name: "constant.character.escape.msgenny"
+          }
+        ]
+      }
+    ]
+  string:
+    begin: "\""
+    beginCaptures:
+      "0":
+        name: "punctuation.definition.string.begin.msgenny"
+    end: "\""
+    endCaptures:
+      "0":
+        name: "punctuation.definition.string.end.msgenny"
+    name: "string.quoted.double.msgenny"
+    patterns: [
+      {
+        match: "\\\\."
+        name: "constant.character.escape.msgenny"
+      }
+    ]
+  optionvalue:
+    patterns: [
+      {
+        include: "#number"
+      }
+      {
+        match: "\\b(0|1|on|off|true|false)\\b"
+        name: "constant.language.msgenny"
+      }
+      {
+        include: "#string"
+      }
+    ]
+  option:
+    begin: "\\b(hscale|width|arcgradient|wordwraparcs|watermark)\\b"
+    beginCaptures:
+      "0":
+        name: "storage.modifier.msgenny"
+    end: "(,|;)"
+    endCaptures:
+      "0":
+        name: "punctuation.definition.option.end.msgenny"
+    patterns: [
+      {
+        comment: "equals operator"
+        match: "="
+        name: "storage.type.msgenny"
+      }
+      {
+        include: "#optionvalue"
+      }
+      {
+        include: "#comment"
+      }
+      {
+        include: "#illegalalien"
+      }
+    ]
+  arctype:
+    patterns: [
+      {
+        comment: "arc types - symbols"
+        match: "(\\|\\|\\||\\.\\.\\.|---|--|<->|==|<<=>>|<=>|\\.\\.|<<>>|::|<:>|->|=>>|=>|>>|:>|<-|<<=|<=|<<|<:|x-|-x|X-|-X)"
+        name: "storage.type.msgenny"
+      }
+      {
+        comment: "arc types - words"
+        match: "\\b(note|box|abox|rbox|alt|else|opt|break|par|seq|strict|neg|critical|ignore|consider|assert|loop|ref|exc)\\b"
+        name: "storage.type.msgenny"
+      }
+    ]
+  attributelist:
+    begin: ":"
+    beginCaptures:
+      "0":
+        name: "punctuation.attributelist.start.msgenny"
+    end: "(;|,|\\{)"
+    endCaptures:
+      "0":
+        name: "punctuation.attributelist.end.msgenny"
+    patterns: [
+      {
+        include: "#comment"
+      }
+      {
+        include: "#inlineblock"
+      }
+      {
+        include: "#string"
+      }
+      {
+        match: "[^,;\\\"\\{]+"
+        name: "string"
+      }
+      {
+        match: "\\\\."
+        name: "constant.character.escape.msgenny"
+      }
+    ]
+  inlineblock:
+    begin: "\\{"
+    beginCaptures:
+      "0":
+        name: "punctuation.definition.inlineblock.start.msgenny"
+    end: "(\\})(;)"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.inlineblock.end.msgenny"
+      "2":
+        name: "punctuation.separator.inlineblock.end.msgenny"
+    patterns: [
+      {
+        include: "#identifier"
+      }
+      {
+        include: "#arctype"
+      }
+      {
+        include: "#inlineblock"
+      }
+      {
+        include: "#punctuation"
+      }
+      {
+        include: "#comment"
+      }
+      {
+        include: "#illegalalien"
+      }
+    ]

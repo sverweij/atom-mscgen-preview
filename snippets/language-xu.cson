@@ -1,0 +1,39 @@
+'.source.xu':
+  'MscGen skeleton':
+    prefix: 'msc'
+    body: """
+    msc {
+        # options
+        wordwraparcs=on;
+        
+        # entities
+        ${1:a} [label="${2:Sender}"],
+        ${3:b} [label="${4:Receiver}"];
+        
+        # arcs
+        ${1:a} =>> ${3:b} [label="Message"];
+        ${3:b} >> ${1:a} [label="Response"];
+        $5
+    }
+    """
+  'MscGen entity':
+    prefix: 'ent'
+    body: '${1:entity} [label="${2:Entity}"]$3'
+  'MscGen arc':
+    prefix: 'arc'
+    body: '${1:from} =>> ${2:to} [label="${3:Message}"];'
+  'Xù loop template':
+    prefix: 'loop'
+    body: """
+    ${1:from} loop ${2:to} [label="${3:For every ...}"] {
+        $4
+    };
+    """
+  'Xù alt template':
+    prefix: 'alt'
+    body: """
+    ${1:from} alt ${2:to} [label="${3:Happy day}"] {
+        $5
+        --- [label="${4:Alternative scenario}"];
+    };
+    """

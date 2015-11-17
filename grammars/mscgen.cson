@@ -1,0 +1,248 @@
+scopeName: "source.mscgen"
+name: "MscGen"
+fileTypes: [
+  "mscgen"
+  "mscin"
+  "msc"
+]
+foldingStartMarker: "{s*$"
+foldingStopMarker: "^s*}"
+patterns: [
+  {
+    comment: "msc program"
+    begin: "\\b(msc)\\b(\\s*)({)"
+    beginCaptures:
+      "0":
+        name: "storage.type.mscgen"
+      "3":
+        name: "punctuation.definition.program.end.mscgen"
+    end: "}"
+    endCaptures:
+      "0":
+        name: "punctuation.definition.program.end.mscgen"
+    patterns: [
+      {
+        include: "#option"
+      }
+      {
+        include: "#punctuation"
+      }
+      {
+        include: "#comment"
+      }
+      {
+        include: "#attributelist"
+      }
+      {
+        include: "#arctype"
+      }
+      {
+        include: "#identifier"
+      }
+      {
+        include: "#illegalalien"
+      }
+    ]
+  }
+  {
+    include: "#comment"
+  }
+  {
+    include: "#illegalalien"
+  }
+]
+repository:
+  punctuation:
+    match: "(,|;)"
+    name: "punctuation.separator.mscgen"
+  illegalalien:
+    comment: "include as last pattern to declare everything different from spaces illegal"
+    match: "\\S"
+    name: "invalid.illegal.mscgen"
+  number:
+    comment: "handles integer and decimal numbers"
+    match: "-?(?=[1-9]|0(?!\\d))\\d+(\\.\\d+)?([eE][+-]?\\d+)?"
+    name: "constant.numeric.mscgen"
+  commentBlock:
+    comment: "e.g. /* yadda */"
+    begin: "/\\*"
+    captures:
+      "0":
+        name: "punctuation.definition.comment.mscgen"
+    end: "\\*/"
+    name: "comment.block.mscgen"
+  commentLineSlash:
+    comment: "e.g. // yadda"
+    begin: "(^[ \\t]+)?(?=//)"
+    beginCaptures:
+      "1":
+        name: "punctuation.whitespace.comment.leading.mscgen"
+    end: "(?!\\G)"
+    patterns: [
+      {
+        begin: "//"
+        beginCaptures:
+          "0":
+            name: "punctuation.definition.comment.mscgen"
+        end: "\\n"
+        name: "comment.line.double-slash.mscgen"
+      }
+    ]
+  commentLineHash:
+    comment: "e.g. # yadda"
+    begin: "(^[ \\t]+)?(?=#)"
+    beginCaptures:
+      "1":
+        name: "punctuation.whitespace.comment.leading.mscgen"
+    end: "(?!\\G)"
+    patterns: [
+      {
+        begin: "#"
+        beginCaptures:
+          "0":
+            name: "punctuation.definition.comment.mscgen"
+        end: "\\n"
+        name: "comment.line.number-sign.mscgen"
+      }
+    ]
+  comment:
+    patterns: [
+      {
+        include: "#commentBlock"
+      }
+      {
+        include: "#commentLineSlash"
+      }
+      {
+        include: "#commentLineHash"
+      }
+    ]
+  identifier:
+    patterns: [
+      {
+        comment: "identifier - bare bones. In mscgen * (\"every entity\") can be used as a special identifier as well"
+        match: "([A-Za-z_0-9])+|(\\*)"
+        name: "variable.identifier.mscgen"
+      }
+      {
+        comment: "identifer - quoted. Basically a string, but we can't duplicate that"
+        begin: "\""
+        end: "\""
+        name: "variable.identifier.mscgen"
+        patterns: [
+          {
+            match: "\\\\."
+            name: "constant.character.escape.mscgen"
+          }
+        ]
+      }
+    ]
+  option:
+    comment: "option"
+    begin: "\\b(hscale|width|arcgradient|wordwraparcs)\\b"
+    beginCaptures:
+      "0":
+        name: "storage.modifier.mscgen"
+    end: "(,|;)"
+    endCaptures:
+      "0":
+        name: "punctuation.definition.option.end.mscgen"
+    patterns: [
+      {
+        comment: "equals operator"
+        match: "="
+        name: "storage.type.mscgen"
+      }
+      {
+        include: "#number"
+      }
+      {
+        match: "\\b(0|1|on|off|true|false)\\b"
+        name: "constant.language.mscgen"
+      }
+      {
+        include: "#attributevalue"
+      }
+      {
+        include: "#comment"
+      }
+      {
+        include: "#illegalalien"
+      }
+    ]
+  attributestring:
+    comment: "strings within an atribute list - duplicated from \"quoted identifiers\" as the matching is the same, but the name is different"
+    begin: "\""
+    beginCaptures:
+      "0":
+        name: "punctuation.definition.string.begin.mscgen"
+    end: "\""
+    endCaptures:
+      "0":
+        name: "punctuation.definition.string.end.mscgen"
+    name: "string.quoted.double.mscgen"
+    patterns: [
+      {
+        match: "\\\\."
+        name: "constant.character.escape.mscgen"
+      }
+    ]
+  attributename:
+    match: "\\b(label|idurl|id|url|linecolor|linecolour|textcolor|textcolour|textbgcolor|textbgcolour|arclinecolor|arclinecolour|arctextcolor|arctextcolour|arctextbgcolor|arctextbgcolour|arcskip)\\b"
+    name: "keyword.attribute.mscgen"
+  attributevalue:
+    patterns: [
+      {
+        include: "#attributestring"
+      }
+      {
+        match: "([A-Za-z_0-9])+"
+        name: "string.identifier.as.attribute.value.mscgen"
+      }
+    ]
+  attributelist:
+    begin: "\\["
+    beginCaptures:
+      "0":
+        name: "punctuation.definition.attributelist.begin.mscgen"
+    end: "\\]"
+    endCaptures:
+      "0":
+        name: "punctuation.definition.attributelist.end.mscgen"
+    name: "keyword.operator.mscgen"
+    patterns: [
+      {
+        include: "#attributename"
+      }
+      {
+        comment: "equals operator"
+        match: "="
+        name: "storage.type.mscgen"
+      }
+      {
+        include: "#attributevalue"
+      }
+      {
+        match: ","
+        name: "punctuation.separator.attributelist.mscgen"
+      }
+      {
+        include: "#comment"
+      }
+      {
+        include: "#illegalalien"
+      }
+    ]
+  arctype:
+    patterns: [
+      {
+        comment: "arc types - symbols"
+        match: "(\\|\\|\\||\\.\\.\\.|---|--|<->|==|<<=>>|<=>|\\.\\.|<<>>|::|<:>|->|=>>|=>|>>|:>|<-|<<=|<=|<<|<:|x-|-x|X-|-X)"
+        name: "storage.type.mscgen"
+      }
+      {
+        comment: "arc types - words"
+        match: "\\b(note|box|abox|rbox)\\b"
+        name: "storage.type.mscgen"
+      }
+    ]
