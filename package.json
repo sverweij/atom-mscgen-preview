@@ -1,6 +1,6 @@
 {
   "name": "mscgen-preview",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "./lib/main",
   "description": "Open a rendered version of the MscGen in the current editor with `ctrl-shift-G`.",
   "repository": {
