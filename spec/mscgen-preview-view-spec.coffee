@@ -14,10 +14,14 @@ describe "MscGenPreviewView", ->
     waitsForPromise ->
       atom.packages.activatePackage("mscgen-preview")
 
-    waitsForPromise ->
-      require('atom-package-deps').install(require('../package.json').name)
-        .then ->
-          atom.packages.activatePackage('language-mscgen')
+    # TODO works well. But not when it's also in the program under test.
+    # So now instead wer're having the language-mscgen snippets & grammars
+    # included in the package.
+    # waitsForPromise ->
+    #   require('atom-package-deps').install(require('../package.json').name)
+      
+    # waitsForPromise ->
+    #   atom.packages.activatePackage('language-mscgen')
 
   afterEach ->
     preview.destroy()

@@ -1,17 +1,17 @@
 {
   "name": "mscgen-preview",
   "version": "0.0.0",
+  "main": "./lib/main",
   "description": "Open a rendered version of the MscGen in the current editor with `ctrl-shift-G`.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sverweij/atom-mscgen-preview"
+  },
   "keywords": [
     "mscgen",
     "sequence chart",
     "preview"
   ],
-  "main": "./lib/main",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sverweij/atom-mscgen-preview"
-  },
   "license": "GPL-3.0",
   "engines": {
     "atom": "*"
@@ -20,15 +20,11 @@
   "dependencies": {
     "amdefine": "1.0.0",
     "node-uuid": "1.4.7",
-    "atom-package-deps": "3.0.2",
     "atom-space-pen-views": "2.1.0",
     "fs-plus": "2.8.1",
     "grim": "2.0.0",
     "underscore-plus": "1.6.6"
   },
-  "package-deps": [
-    "language-mscgen"
-  ],
   "devDependencies": {
     "coffeelint": "1.13.1",
     "temp": "0.8.3",

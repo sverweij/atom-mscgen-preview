@@ -24,6 +24,18 @@ module.exports =
       description: 'Open the preview in a split pane. If disabled, the preview is opened in a new tab in the same pane.'
 
   activate: ->
+    # TODO: this works. However, when running apm test (who're using the same
+    # trick) :zap: "Could not resolve 'language-mscgen' to a package path"
+    #
+    # require('atom-package-deps').install(require('../package.json').name)
+    #
+    # So instead language-mscgen (grammar, snippets) is included integrally
+    # in the package.
+    # It'll additionally need a package-deps array in package.json:
+    #  "package-deps": [
+    #    "language-mscgen"
+    #],
+
     atom.deserializers.add
       name: 'MscGenPreviewView'
       deserialize: (state) ->
