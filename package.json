@@ -18,16 +18,21 @@
   },
   "readmeFilename": "README.md",
   "dependencies": {
-    "atom-space-pen-views": "2.0.0",
-    "fs-plus": "2.0.0",
+    "amdefine": "1.0.0",
+    "node-uuid": "1.4.7",
+    "atom-package-deps": "3.0.2",
+    "atom-space-pen-views": "2.1.0",
+    "fs-plus": "2.8.1",
     "grim": "2.0.0",
-    "underscore-plus": "1.0.0",
-    "wrench": "1.5.0"
+    "underscore-plus": "1.6.6"
   },
+  "package-deps": [
+    "language-mscgen"
+  ],
   "devDependencies": {
-    "amdefine": "^1.0.0",
-    "coffeelint": "1.9.7",
-    "temp": "0.8.1"
+    "coffeelint": "1.13.1",
+    "temp": "0.8.3",
+    "wrench": "1.5.8"
   },
   "bugs": {
     "url": "https://github.com/sverweij/atom-mscgen-preview/issues"
