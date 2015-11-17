@@ -1,0 +1,14 @@
+msc {
+    # options
+    wordwraparcs=on;
+    
+    # entities
+    fred [label="Fred"],
+    barney [label="Barney"];
+    
+    # arcs
+    fred =>> barney [label="can you make something from this rock?"];
+    barney >> fred [label="Bowling ball"];
+    fred =>> barney [label="Yabba dabba dooooo!"];
+    
+}
