@@ -14,5 +14,6 @@ it as part of other free software, but _not_ as part of non free software.
 
 ## Build status
 [![Build Status](https://travis-ci.org/sverweij/atom-mscgen-preview.svg?branch=master)](https://travis-ci.org/sverweij/atom-mscgen-preview)
+[![Code Climate](https://codeclimate.com/github/sverweij/atom-mscgen-preview/badges/gpa.svg)](https://codeclimate.com/github/sverweij/atom-mscgen-preview)
 [![Dependency Status](https://david-dm.org/sverweij/atom-mscgen-preview.svg)](https://david-dm.org/sverweij/atom-mscgen-preview)
 [![devDependency Status](https://david-dm.org/sverweij/wordywordy/dev-status.svg)](https://david-dm.org/sverweij/atom-mscgen-preview#info=devDependencies)
