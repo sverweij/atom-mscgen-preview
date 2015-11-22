@@ -9,8 +9,6 @@ engines:
 ratings:
   paths:
   - "**.coffee"
-  - "**.js"
-  - "**.jsx"
 exclude_paths:
 - spec/**/*
 - lib/mscgen_js/**/*
