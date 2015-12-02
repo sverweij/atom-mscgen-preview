@@ -208,8 +208,9 @@ class MscGenPreviewView extends ScrollView
   showError: (error) ->
     # TODO: properly dreg in and/ or use atom native error handling
     errRender ?= require './mscgen_js/ui/embedding/error-rendering'
-    
+
     @html(errRender.renderError error.sourceMsc, error.location, error.message)
+
     # @html $$$ ->
       # @h2 'Previewing Msc Failed'
       # @h3 failureMessage if failureMessage?
