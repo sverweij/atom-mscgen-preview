@@ -8,3 +8,7 @@
     ]
   ]
 ]
+'context-menu':
+  '.mscgen-preview': [
+    {label: 'Save As SVG\u2026', command: 'core:save-as'}
+  ]

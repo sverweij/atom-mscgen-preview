@@ -14,6 +14,7 @@ exports.render = (text='', elementId, grammar, callback) ->
 
     mscRender.clean elementId, window
     mscRender.renderAST pAST, text, elementId, window
+    return callback(null, document.getElementById(elementId).innerHTML)
 
 determineParser = (pGrammar) ->
   # TODO: get dependencies from npm

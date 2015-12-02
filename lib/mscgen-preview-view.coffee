@@ -20,6 +20,7 @@ class MscGenPreviewView extends ScrollView
     @emitter = new Emitter
     @disposables = new CompositeDisposable
     @loaded = false
+    @svg = null
 
   attached: ->
     return if @isAttached
@@ -90,6 +91,9 @@ class MscGenPreviewView extends ScrollView
         @scrollUp()
       'core:move-down': =>
         @scrollDown()
+      'core:save-as': (event) =>
+        event.stopPropagation()
+        @saveAs()
       'mscgen-preview:zoom-in': =>
         zoomLevel = parseFloat(@css('zoom')) or 1
         @css('zoom', zoomLevel + .1)
@@ -134,15 +138,22 @@ class MscGenPreviewView extends ScrollView
     uuid ?= require 'node-uuid'
     lElementId = uuid.v4()
     @html("<div id=#{lElementId}></div>")
-    renderer.render text, lElementId, @getGrammar(), (error, domFragment) =>
+    @svg = null # HACK
+    renderer.render text, lElementId, @getGrammar(), (error, svg) =>
       if error
         @showError(error)
       else
         @loading = false
         @loaded = true
-        # @html(domFragment)
+        @svg = svg # HACK
         @emitter.emit 'did-change-mscgen'
         @originalTrigger('mscgen-preview:msc-changed')
+
+  getSVG: (callback)->
+    @getMscSource().then (source) =>
+      return unless source?
+
+      renderer.render source, @getPath(), @getGrammar(), callback
 
   getTitle: ->
     if @file?
@@ -173,53 +184,41 @@ class MscGenPreviewView extends ScrollView
   getDocumentStyleSheets: -> # This function exists so we can stub it
     document.styleSheets
 
-  getTextEditorStyles: ->
-    textEditorStyles = document.createElement("atom-styles")
-    textEditorStyles.initialize(atom.styles)
-    textEditorStyles.setAttribute "context", "atom-text-editor"
-    document.body.appendChild textEditorStyles
-
-    # Extract style elements content
-    Array.prototype.slice.apply(textEditorStyles.childNodes).map (styleElement) ->
-      styleElement.innerText
-
-  getMscPreviewCSS: ->
-    markdowPreviewRules = []
-    ruleRegExp = /\.mscgen-preview/
-    cssUrlRefExp = /url\(atom:\/\/mscgen-preview\/assets\/(.*)\)/
-
-    for stylesheet in @getDocumentStyleSheets()
-      if stylesheet.rules?
-        for rule in stylesheet.rules
-          # We only need `.Msc-review` css
-          markdowPreviewRules.push(rule.cssText) if rule.selectorText?.match(ruleRegExp)?
-
-    markdowPreviewRules
-      .concat(@getTextEditorStyles())
-      .join('\n')
-      .replace(/atom-text-editor/g, 'pre.editor-colors')
-      .replace(/:host/g, '.host') # Remove shadow-dom :host selector causing problem on FF
-      .replace cssUrlRefExp, (match, assetsName, offset, string) -> # base64 encode assets
-        assetPath = path.join __dirname, '../assets', assetsName
-        originalData = fs.readFileSync assetPath, 'binary'
-        base64Data = new Buffer(originalData, 'binary').toString('base64')
-        "url('data:image/jpeg;base64,#{base64Data}')"
-
   showError: (error) ->
     # TODO: properly dreg in and/ or use atom native error handling
     errRender ?= require './mscgen_js/ui/embedding/error-rendering'
 
     @html(errRender.renderError error.sourceMsc, error.location, error.message)
 
-    # @html $$$ ->
-      # @h2 'Previewing Msc Failed'
-      # @h3 failureMessage if failureMessage?
-      # @span
-
   showLoading: ->
     @loading = true
     @html $$$ ->
       @div class: 'msc-spinner', 'Loading msc\u2026'
+
+  saveAs: ->
+    return if @loading or not @svg# HACK
+
+    filePath = @getPath()
+    title = 'msc to svg'
+    if filePath
+      title = path.parse(filePath).name
+      filePath += '.svg'
+    else
+      filePath = 'untitled.svg'
+      if projectPath = atom.project.getPaths()[0]
+        filePath = path.join(projectPath, filePath)
+
+    if svgFilePath = atom.showSaveDialogSync(filePath)
+
+      # @getHTML (error, htmlBody) ->
+      #   if error?
+      #     console.warn('Saving msc as SVG failed', error)
+      #   else
+      # svg = """Qui Que Boo
+      #   """ + "\n" # Ensure trailing newline
+
+      fs.writeFileSync(svgFilePath, @svg) # HACK
+      atom.workspace.open(svgFilePath)
 
   isEqual: (other) ->
     @[0] is other?[0] # Compare DOM elements
