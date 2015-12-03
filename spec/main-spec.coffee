@@ -27,7 +27,7 @@ describe "MscGen preview package", ->
     # included in the package.
     # waitsForPromise ->
     #   require('atom-package-deps').install(require('../package.json').name)
-      
+
     # waitsForPromise ->
     #   atom.packages.activatePackage('language-mscgen')
 
@@ -102,7 +102,7 @@ describe "MscGen preview package", ->
           preview.text().indexOf("a note a: made in Holland;") >= 0
 
         runs ->
-          expect(preview.showLoading).toHaveBeenCalled()
+          expect(preview.showLoading).not.toHaveBeenCalled()
 
       xit "invokes ::onDidChangeMsc listeners", ->
         mscEditor = atom.workspace.getActiveTextEditor()
@@ -223,8 +223,4 @@ describe "MscGen preview package", ->
       expectPreviewInSplitPane()
 
       runs ->
-        expect(preview[0].innerHTML).toBe """
-          <pre><div style="color: red"># ERROR on line 1, column 1 - Expected "msc", comment, lineend or whitespace but "&lt;" found.</div><mark>  1 <span style="text-decoration:underline">&lt;</span>puthaken&gt;spul&lt;/puthaken&gt;
-          </mark>  2 
-          </pre>
-        """
+        expect(preview[0].innerHTML).toContain """<span style="text-decoration:underline">&lt;</span>puthaken&gt;spul&lt;/puthaken&gt;"""
