@@ -94,6 +94,8 @@ class MscGenPreviewView extends ScrollView
       'core:save-as': (event) =>
         event.stopPropagation()
         @saveAs()
+      'core:copy': (event) =>
+        event.stopPropagation() if @copyToClipboard()
       'mscgen-preview:zoom-in': =>
         zoomLevel = parseFloat(@css('zoom')) or 1
         @css('zoom', zoomLevel + .1)
@@ -195,8 +197,15 @@ class MscGenPreviewView extends ScrollView
     @html $$$ ->
       @div class: 'msc-spinner', 'Loading msc\u2026'
 
+  copyToClipboard: ->
+    return false if @loading or not @svg
+
+    atom.clipboard.write(@svg)
+
+    true
+
   saveAs: ->
-    return if @loading or not @svg# HACK
+    return if @loading or not @svg # HACK
 
     filePath = @getPath()
     title = 'msc to svg'

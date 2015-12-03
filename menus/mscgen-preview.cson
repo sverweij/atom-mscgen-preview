@@ -10,5 +10,6 @@
 ]
 'context-menu':
   '.mscgen-preview': [
+    {label: 'Copy As SVG', command: 'core:copy'}
     {label: 'Save As SVG\u2026', command: 'core:save-as'}
   ]
