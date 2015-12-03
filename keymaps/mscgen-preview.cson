@@ -1,2 +1,16 @@
 'atom-workspace, atom-workspace atom-text-editor':
   'ctrl-G': 'mscgen-preview:toggle'
+
+'.platform-darwin .mscgen-preview':
+  'cmd-+': 'mscgen-preview:zoom-in'
+  'cmd-=': 'mscgen-preview:zoom-in'
+  'cmd--': 'mscgen-preview:zoom-out'
+  'cmd-_': 'mscgen-preview:zoom-out'
+  'cmd-0': 'mscgen-preview:reset-zoom'
+
+'.platform-win32 .mscgen-preview, .platform-linux .mscgen-preview':
+  'ctrl-+': 'mscgen-preview:zoom-in'
+  'ctrl-=': 'mscgen-preview:zoom-in'
+  'ctrl--': 'mscgen-preview:zoom-out'
+  'ctrl-_': 'mscgen-preview:zoom-out'
+  'ctrl-0': 'mscgen-preview:reset-zoom'
