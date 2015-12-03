@@ -11,5 +11,5 @@ git:
   depth: 10
 
 branches:
-  only:
-    - master
+  except:
+    - gh-pages
