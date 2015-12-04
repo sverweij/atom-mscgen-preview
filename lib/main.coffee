@@ -2,7 +2,6 @@ url = require 'url'
 fs = require 'fs-plus'
 
 MscGenPreviewView = null # Defer until used
-renderer = null # Defer until used
 
 createMscGenPreviewView = (state) ->
   MscGenPreviewView ?= require './mscgen-preview-view'
@@ -46,8 +45,9 @@ module.exports =
       'mscgen-preview:toggle': =>
         @toggle()
 
-    previewFile = @previewFile.bind(this)
-    
+    # previewFile = @previewFile.bind(this)
+    # atom.commands.add '.tree-view .file .name[data-name$=\\.mscgen]', 'mscgen-preview:preview-file', previewFile
+
     atom.workspace.addOpener (uriToOpen) ->
       try
         {protocol, host, pathname} = url.parse(uriToOpen)
@@ -73,7 +73,7 @@ module.exports =
 
     editor = atom.workspace.getActiveTextEditor()
     return unless editor?
-    
+
     grammars = [
       'source.mscgen'
       'source.xu'
@@ -106,12 +106,12 @@ module.exports =
       if isMscGenPreviewView(mscgenPreviewView)
         previousActivePane.activate()
 
-  previewFile: ({target}) ->
-    filePath = target.dataset.path
-    return unless filePath
-
-    for editor in atom.workspace.getTextEditors() when editor.getPath() is filePath
-      @addPreviewForEditor(editor)
-      return
-
-    atom.workspace.open "mscgen-preview://#{encodeURI(filePath)}", searchAllPanes: true
+  # previewFile: ({target}) ->
+  #   filePath = target.dataset.path
+  #   return unless filePath
+  #
+  #   for editor in atom.workspace.getTextEditors() when editor.getPath() is filePath
+  #     @addPreviewForEditor(editor)
+  #     return
+  #
+  #   atom.workspace.open "mscgen-preview://#{encodeURI(filePath)}", searchAllPanes: true
