@@ -7,7 +7,7 @@ _                    = require 'underscore-plus'
 fs                   = require 'fs-plus'
 uuid                 = null
 
-renderer = require './renderer'
+renderer = null # Defer until used
 errRender = null # Defer until used
 
 module.exports =
@@ -141,6 +141,7 @@ class MscGenPreviewView extends ScrollView
     lElementId = uuid.v4()
     @html("<div id=#{lElementId}></div>")
     @svg = null # HACK
+    renderer ?= require "./renderer"
     renderer.render text, lElementId, @getGrammar(), (error, svg) =>
       if error
         @showError(error)
@@ -208,24 +209,17 @@ class MscGenPreviewView extends ScrollView
     return if @loading or not @svg # HACK
 
     filePath = @getPath()
-    title = 'msc to svg'
     if filePath
-      title = path.parse(filePath).name
-      filePath += '.svg'
+      filePath = path.join(
+        path.dirname(filePath),
+        path.basename(filePath, path.extname(filePath)),
+      ).concat('.svg')
     else
       filePath = 'untitled.svg'
       if projectPath = atom.project.getPaths()[0]
         filePath = path.join(projectPath, filePath)
 
     if svgFilePath = atom.showSaveDialogSync(filePath)
-
-      # @getHTML (error, htmlBody) ->
-      #   if error?
-      #     console.warn('Saving msc as SVG failed', error)
-      #   else
-      # svg = """Qui Que Boo
-      #   """ + "\n" # Ensure trailing newline
-
       fs.writeFileSync(svgFilePath, @svg) # HACK
       atom.workspace.open(svgFilePath)
 
