@@ -13,3 +13,5 @@
     {label: 'Copy As SVG', command: 'core:copy'}
     {label: 'Save As SVG\u2026', command: 'core:save-as'}
   ]
+  # '.tree-view .file .name[data-name$=\\.mscgen]':
+  #   [{label: 'MscGen Preview', command:  'mscgen-preview:preview-file'}]
