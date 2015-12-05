@@ -1,6 +1,7 @@
 path = require 'path'
 fs = require 'fs-plus'
 temp = require 'temp'
+wrench = require 'wrench'
 MscGenPreviewView = require '../lib/mscgen-preview-view'
 
 describe "MscGenPreviewView", ->
@@ -13,15 +14,6 @@ describe "MscGenPreviewView", ->
 
     waitsForPromise ->
       atom.packages.activatePackage("mscgen-preview")
-
-    # TODO works well. But not when it's also in the program under test.
-    # So now instead wer're having the language-mscgen snippets & grammars
-    # included in the package.
-    # waitsForPromise ->
-    #   require('atom-package-deps').install(require('../package.json').name)
-      
-    # waitsForPromise ->
-    #   atom.packages.activatePackage('language-mscgen')
 
   afterEach ->
     preview.destroy()
@@ -42,7 +34,7 @@ describe "MscGenPreviewView", ->
             line: 13
             column: 37
         message: "Listen carefully. I only say this once."
-        
+
       preview.showError(error)
       expect(preview.text()).toContain "# ERROR on line 13, column 37 - Listen carefully. I only say this once."
 
@@ -51,7 +43,7 @@ describe "MscGenPreviewView", ->
 
     afterEach ->
       newPreview?.destroy()
-    
+
     # TDOO deserialization not implemented
     xit "recreates the preview when serialized/deserialized", ->
       newPreview = atom.deserializers.deserialize(preview.serialize())
@@ -85,3 +77,68 @@ describe "MscGenPreviewView", ->
         newPreview = atom.deserializers.deserialize(preview.serialize())
         jasmine.attachToDOM(newPreview.element)
         expect(newPreview.getPath()).toBe preview.getPath()
+
+  describe "when core:copy is triggered", ->
+    beforeEach ->
+      fixturesPath = path.join(__dirname, 'fixtures')
+      tempPath = temp.mkdirSync('atom')
+      wrench.copyDirSyncRecursive(fixturesPath, tempPath, forceDelete: true)
+      atom.project.setPaths([tempPath])
+
+      jasmine.useRealClock()
+
+      workspaceElement = atom.views.getView(atom.workspace)
+      jasmine.attachToDOM(workspaceElement)
+      atom.clipboard.write "initial clipboard content"
+
+    it "writes the rendered SVG to the clipboard", ->
+      previewPaneItem = null
+
+      waitsForPromise ->
+        atom.workspace.open('subdir/序列圖.xu')
+      runs ->
+        atom.commands.dispatch workspaceElement, 'mscgen-preview:toggle'
+      waitsFor ->
+        previewPaneItem = atom.workspace.getPanes()[1].getActiveItem()
+      runs ->
+        atom.commands.dispatch previewPaneItem.element, 'core:copy'
+      waitsFor ->
+        atom.clipboard.read() isnt "initial clipboard content"
+
+      runs ->
+        expect(atom.clipboard.read()).toContain """<svg version="1.1" id="""
+        expect(atom.clipboard.read()).toContain "<tspan>Super API</tspan></text></g>"
+
+  describe "when core:save-as is triggered", ->
+    beforeEach ->
+      fixturesPath = path.join(__dirname, 'fixtures')
+      tempPath = temp.mkdirSync('atom')
+      wrench.copyDirSyncRecursive(fixturesPath, tempPath, forceDelete: true)
+      atom.project.setPaths([tempPath])
+
+      jasmine.useRealClock()
+
+      workspaceElement = atom.views.getView(atom.workspace)
+      jasmine.attachToDOM(workspaceElement)
+
+    it "saves an SVG and opens it", ->
+      outputPath = temp.path() + 'subdir/序列圖.svg'
+      previewPaneItem = null
+
+      waitsForPromise ->
+        atom.workspace.open('subdir/序列圖.xu')
+      runs ->
+        atom.commands.dispatch workspaceElement, 'mscgen-preview:toggle'
+      waitsFor ->
+        previewPaneItem = atom.workspace.getPanes()[1].getActiveItem()
+      runs ->
+        spyOn(atom, 'showSaveDialogSync').andReturn(outputPath)
+        atom.commands.dispatch previewPaneItem.element, 'core:save-as'
+      waitsFor ->
+        fs.existsSync(outputPath)
+
+      runs ->
+        expect(fs.isFileSync(outputPath)).toBe true
+        writtenFile = fs.readFileSync outputPath
+        expect(writtenFile).toContain """<svg version="1.1" id="""
+        expect(writtenFile).toContain "<tspan>Super API</tspan></text></g>"
