@@ -7,8 +7,8 @@ _                    = require 'underscore-plus'
 fs                   = require 'fs-plus'
 uuid                 = null
 
-renderer = null # Defer until used
-errRender = null # Defer until used
+renderer             = null # Defer until used
+errRenderer          = null # Defer until used
 
 module.exports =
 class MscGenPreviewView extends ScrollView
@@ -188,10 +188,10 @@ class MscGenPreviewView extends ScrollView
     document.styleSheets
 
   showError: (error) ->
-    # TODO: properly dreg in and/ or use atom native error handling
-    errRender ?= require './mscgen_js/ui/embedding/error-rendering'
+    errRenderer ?= require './errRenderer'
 
-    @html(errRender.renderError error.sourceMsc, error.location, error.message)
+    @getMscSource().then (source) =>
+      @html(errRenderer.renderError source, error.location, error.message) if source?
 
   showLoading: ->
     @loading = true

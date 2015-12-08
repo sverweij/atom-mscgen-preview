@@ -26,18 +26,6 @@ describe "MscGenPreviewView", ->
       waitsForPromise ->
         preview.renderMsc()
 
-    it "shows an error message when there is an error", ->
-      error =
-        sourceMsc: "weird source"
-        location:
-          start:
-            line: 13
-            column: 37
-        message: "Listen carefully. I only say this once."
-
-      preview.showError(error)
-      expect(preview.text()).toContain "# ERROR on line 13, column 37 - Listen carefully. I only say this once."
-
   describe "serialization", ->
     newPreview = null
 
