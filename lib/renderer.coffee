@@ -7,7 +7,7 @@ scopeName2inputType =
 
 exports.render = (pScript='', pElementId, pGrammar, pCallback) ->
   # TODO: get dependencies from npm
-  mscgenjs ?= require './mscgen_js'
+  mscgenjs ?= require 'mscgenjs'
 
   lOptions =
     elementId: pElementId
