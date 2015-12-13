@@ -1,3 +1,4 @@
+@import 'ui-variables';
 @import 'syntax-variables';
 .mscgen-preview {
     color: black;
@@ -30,6 +31,15 @@
     .error-wrap {
         padding: 0 2em 2em 2em;
         font-size:1.2em;
+    }
+
+    .error-head {
+        padding: 0.5em;
+        background-color: @app-background-color;
+    }
+
+    .error-text {
+        color: @text-color;
     }
 }
 
