@@ -1,9 +1,10 @@
+@import 'syntax-variables';
 .mscgen-preview {
     color: black;
     background-color: white;
     padding-top:2em;
     overflow: auto;
-    
+
     atom-text-editor {
       // only show scrollbars on hover
       .scrollbars-visible-always &::shadow {
@@ -18,6 +19,17 @@
           visibility: visible;
         }
       }
+    }
+
+    .code {
+        overflow-x: auto;
+        color: @syntax-text-color;
+        background-color: @syntax-background-color;
+    }
+
+    .error-wrap {
+        padding: 0 2em 2em 2em;
+        font-size:1.2em;
     }
 }
 
