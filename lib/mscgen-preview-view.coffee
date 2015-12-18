@@ -188,7 +188,7 @@ class MscGenPreviewView extends ScrollView
     document.styleSheets
 
   showError: (error) ->
-    errRenderer ?= require './errRenderer'
+    errRenderer ?= require './err-renderer'
 
     @getMscSource().then (source) =>
       @html(errRenderer.renderError source, error.location, error.message) if source?
