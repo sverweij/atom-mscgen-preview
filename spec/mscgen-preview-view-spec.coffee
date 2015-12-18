@@ -130,3 +130,24 @@ describe "MscGenPreviewView", ->
         writtenFile = fs.readFileSync outputPath
         expect(writtenFile).toContain """<svg version="1.1" id="""
         expect(writtenFile).toContain "<tspan>Super API</tspan></text></g>"
+
+    it "saves a PNG and opens it", ->
+      outputPath = temp.path() + 'subdir/序列圖.png'
+      previewPaneItem = null
+
+      waitsForPromise ->
+        atom.workspace.open('subdir/序列圖.xu')
+      runs ->
+        atom.commands.dispatch workspaceElement, 'mscgen-preview:toggle'
+      waitsFor ->
+        previewPaneItem = atom.workspace.getPanes()[1].getActiveItem()
+      runs ->
+        spyOn(atom, 'showSaveDialogSync').andReturn(outputPath)
+        atom.commands.dispatch previewPaneItem.element, 'mscgen-preview:save-as-png'
+      waitsFor ->
+        fs.existsSync(outputPath)
+
+      runs ->
+        expect(fs.isFileSync(outputPath)).toBe true
+        writtenFile = fs.readFileSync outputPath
+        expect(writtenFile).toContain "PNG"
