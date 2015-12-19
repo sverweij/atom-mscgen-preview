@@ -201,7 +201,7 @@ class MscGenPreviewView extends ScrollView
     @html $$$ ->
       @div class: 'msc-spinner', 'Loading msc\u2026'
 
-  copyToClipboard: (pOutputType) ->
+  copyToClipboard: ->
     return false if @loading or not @svg
 
     atom.clipboard.write(@svg)
