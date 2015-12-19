@@ -2,7 +2,6 @@ path = require 'path'
 
 {Emitter, Disposable, CompositeDisposable, File} = require 'atom'
 {$, $$$, ScrollView} = require 'atom-space-pen-views'
-Grim                 = require 'grim'
 _                    = require 'underscore-plus'
 fs                   = require 'fs-plus'
 uuid                 = null
@@ -233,9 +232,3 @@ class MscGenPreviewView extends ScrollView
 
   isEqual: (other) ->
     @[0] is other?[0] # Compare DOM elements
-
-if Grim.includeDeprecatedAPIs
-  MscGenPreviewView::on = (eventName) ->
-    if eventName is 'mscgen-preview:msc-changed'
-      Grim.deprecate("Use MscGenPreviewView::onDidChangeMsc instead of the 'mscgen-preview:msc-changed' jQuery event")
-    super
