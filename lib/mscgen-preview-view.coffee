@@ -9,6 +9,7 @@ uuid                 = null
 
 renderer             = null # Defer until used
 errRenderer          = null # Defer until used
+svgToRaster          = null # Defer until used
 
 module.exports =
 class MscGenPreviewView extends ScrollView
@@ -93,7 +94,10 @@ class MscGenPreviewView extends ScrollView
         @scrollDown()
       'core:save-as': (event) =>
         event.stopPropagation()
-        @saveAs()
+        @saveAs('svg')
+      'mscgen-preview:save-as-png': (event) =>
+        event.stopPropagation()
+        @saveAs('png')
       'core:copy': (event) =>
         event.stopPropagation() if @copyToClipboard()
       'mscgen-preview:zoom-in': =>
@@ -188,7 +192,7 @@ class MscGenPreviewView extends ScrollView
     document.styleSheets
 
   showError: (error) ->
-    errRenderer ?= require './errRenderer'
+    errRenderer ?= require './err-renderer'
 
     @getMscSource().then (source) =>
       @html(errRenderer.renderError source, error.location, error.message) if source?
@@ -198,30 +202,34 @@ class MscGenPreviewView extends ScrollView
     @html $$$ ->
       @div class: 'msc-spinner', 'Loading msc\u2026'
 
-  copyToClipboard: ->
+  copyToClipboard: (pOutputType) ->
     return false if @loading or not @svg
 
     atom.clipboard.write(@svg)
 
     true
 
-  saveAs: ->
-    return if @loading or not @svg # HACK
+  saveAs: (pOutputType) ->
+    return if @loading or not @svg
 
     filePath = @getPath()
     if filePath
       filePath = path.join(
         path.dirname(filePath),
         path.basename(filePath, path.extname(filePath)),
-      ).concat('.svg')
+      ).concat('.').concat(pOutputType)
     else
-      filePath = 'untitled.svg'
+      filePath = 'untitled.'.concat(pOutputType)
       if projectPath = atom.project.getPaths()[0]
         filePath = path.join(projectPath, filePath)
 
-    if svgFilePath = atom.showSaveDialogSync(filePath)
-      fs.writeFileSync(svgFilePath, @svg) # HACK
-      atom.workspace.open(svgFilePath)
+    if outputFilePath = atom.showSaveDialogSync(filePath)
+      if 'png' == pOutputType
+        svgToRaster ?= require './svg-to-raster'
+        fs.writeFileSync(outputFilePath, svgToRaster.transform @svg)
+      else
+        fs.writeFileSync(outputFilePath, @svg)
+      atom.workspace.open(outputFilePath)
 
   isEqual: (other) ->
     @[0] is other?[0] # Compare DOM elements
