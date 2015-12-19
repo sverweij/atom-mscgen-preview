@@ -9,11 +9,11 @@ Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` files
 ## Features
 - **syntax highlighting** from the [language-mscgen](https://atom.io/packages/language-mscgen) package - so no need to install that separately.
 - **realtime rendering** of your sequence chart
-- **SVG export** - to file or clipboard.
+- **SVG export** - to file or clipboard
 - **PNG export** - to file
 - Uses the pure javascript **[mscgen_js](https://github.com/sverweij/mscgen_js)** package for parsing and rendering, so apart from **MscGen** (`*.mscgen`, `*.mscin`, `*.msc`) it supports
   - **Xù** (`*.xu`)    
-    A little language that adds inline expressions like `alt` and `loop` to MscGen.
+    A little language that adds things like `alt` and `loop` to MscGen.
     See the [Xù wiki page](https://github.com/sverweij/mscgen_js/blob/master/wikum/xu.md)
     for more information.
   - **MsGenny** (`*.msgenny`)    
@@ -22,7 +22,7 @@ Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` files
     has more information.
 
 ## License information
-This software is free software [licensed under GPLv3](LICENSE.md). This means (a.o.) you _can_ use
+This software is free software [licensed under GPL-3.0](LICENSE.md). This means (a.o.) you _can_ use
 it as part of other free software, but _not_ as part of non free software.
 
 ## Build status
