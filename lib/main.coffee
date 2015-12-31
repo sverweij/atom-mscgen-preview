@@ -36,6 +36,8 @@ module.exports =
         @toggle()
       'mscgen-preview:translate': =>
         @translate()
+      'mscgen-preview:abstract-syntax-tree': =>
+        @translate('source.ast')
       'mscgen-preview:auto-format': =>
         @autoFormat()
 
@@ -77,7 +79,7 @@ module.exports =
 
     return editor
 
-  translate: ->
+  translate: (pScopeName)->
     return unless editor = @isActionable()
 
     autoTranslations =
@@ -85,7 +87,7 @@ module.exports =
       'source.xu'     : 'source.msgenny'
       'source.msgenny': 'source.xu'
 
-    toScope = autoTranslations[editor.getGrammar().scopeName] or 'source.xu'
+    toScope = pScopeName or autoTranslations[editor.getGrammar().scopeName] or 'source.xu'
 
     renderer ?= require "./renderer"
     renderer.translate editor.getText(), editor.getGrammar().scopeName, toScope, (error, result) ->
