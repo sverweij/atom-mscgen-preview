@@ -1,5 +1,7 @@
-url = require 'url'
-fs = require 'fs-plus'
+url      = require 'url'
+fs       = require 'fs-plus'
+path     = require 'path'
+renderer = null
 
 MscGenPreviewView = null # Defer until used
 
@@ -32,6 +34,10 @@ module.exports =
     atom.commands.add 'atom-workspace',
       'mscgen-preview:toggle': =>
         @toggle()
+      'mscgen-preview:translate': =>
+        @translate()
+      'mscgen-preview:auto-format': =>
+        @autoFormat()
 
     # previewFile = @previewFile.bind(this)
     # atom.commands.add '.tree-view .file .name[data-name$=\\.mscgen]', 'mscgen-preview:preview-file', previewFile
@@ -54,7 +60,7 @@ module.exports =
       else
         createMscGenPreviewView(filePath: pathname)
 
-  toggle: ->
+  isActionable: ->
     if isMscGenPreviewView(atom.workspace.getActivePaneItem())
       atom.workspace.destroyActivePaneItem()
       return
@@ -69,6 +75,49 @@ module.exports =
     ]
     return unless editor.getGrammar().scopeName in grammars
 
+    return editor
+
+  translate: ->
+    return unless editor = @isActionable()
+
+    autoTranslations =
+      'source.mscgen' : 'source.msgenny'
+      'source.xu'     : 'source.msgenny'
+      'source.msgenny': 'source.xu'
+
+    toScope = autoTranslations[editor.getGrammar().scopeName] or 'source.xu'
+
+    renderer ?= require "./renderer"
+    renderer.translate editor.getText(), editor.getGrammar().scopeName, toScope, (error, result) ->
+      if error
+        console.error error
+      else
+        filePath = editor.getPath()
+        if filePath
+          filePath = path.join(
+            path.dirname(filePath),
+            path.basename(filePath, path.extname(filePath)),
+          ).concat('.').concat(renderer.scopeName2inputType[toScope] or 'xu')
+          if outputFilePath = atom.showSaveDialogSync(filePath)
+            fs.writeFileSync(outputFilePath, result)
+            atom.workspace.open(outputFilePath)
+        else # just a buffer => replace contents & swap grammar
+          editor.setGrammar(atom.grammars.grammarForScopeName(toScope))
+          editor.setText(result)
+
+  autoFormat: ->
+    return unless editor = @isActionable()
+    renderer ?= require "./renderer"
+    renderer.translate editor.getText(), editor.getGrammar().scopeName, editor.getGrammar().scopeName, (error, result) ->
+      if error
+        console.error error
+      else
+        console.log result
+        editor.setText(result)
+
+
+  toggle: ->
+    return unless editor = @isActionable()
     @addPreviewForEditor(editor) unless @removePreviewForEditor(editor)
 
   uriForEditor: (editor) ->
