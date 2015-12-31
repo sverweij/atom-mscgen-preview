@@ -117,7 +117,6 @@ module.exports =
         console.log result
         editor.setText(result)
 
-
   toggle: ->
     return unless editor = @isActionable()
     @addPreviewForEditor(editor) unless @removePreviewForEditor(editor)
