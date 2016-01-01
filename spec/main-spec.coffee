@@ -1,9 +1,9 @@
-path = require 'path'
-fs = require 'fs-plus'
-temp = require 'temp'
-wrench = require 'wrench'
+path              = require 'path'
+fs                = require 'fs-plus'
+temp              = require 'temp'
+wrench            = require 'wrench'
 MscGenPreviewView = require '../lib/mscgen-preview-view'
-{$} = require 'atom-space-pen-views'
+{$}               = require 'atom-space-pen-views'
 
 describe "MscGen preview package", ->
   [workspaceElement, preview] = []
@@ -215,7 +215,6 @@ describe "MscGen preview package", ->
       runs ->
         expect(atom.workspace.getActiveTextEditor()).toBeTruthy()
 
-
   describe "sanitization", ->
     it "removes script tags and attributes that commonly contain inline scripts", ->
       waitsForPromise -> atom.workspace.open("subdir/puthaken.mscgen")
@@ -226,3 +225,134 @@ describe "MscGen preview package", ->
         expect(preview[0].innerHTML).toContain """<span style="text-decoration:underline">&lt;</span>puthaken&gt;spul&lt;/puthaken&gt;"""
         expect(preview[0].innerHTML).toContain """error on line 1, column 1"""
         expect(preview[0].innerHTML).toContain """Expected "msc", comment, lineend or whitespace but "&lt;" found."""
+
+  describe "translations in buffers not associated to files", ->
+    beforeEach ->
+      waitsForPromise -> atom.packages.activatePackage("language-json")
+
+    describe "when mscgen-preview:translate is triggered", ->
+      it "does nothing when the current buffer is not mscgen-previewable", ->
+        waitsForPromise -> atom.workspace.open()
+        runs ->
+          mscEditor = atom.workspace.getActiveTextEditor()
+          mscEditor.setGrammar(atom.grammars.grammarForScopeName("source.json"))
+          mscEditor.setText "Jan, Pier, Tjorus en Korneel. Die hebben baarden"
+          atom.commands.dispatch workspaceElement, 'mscgen-preview:translate'
+          expect(mscEditor.getText()).toBe "Jan, Pier, Tjorus en Korneel. Die hebben baarden"
+          expect(mscEditor.getGrammar().scopeName).toBe "source.json"
+
+      it "translates MscGen into MsGenny in the current buffer and switches the grammar", ->
+        waitsForPromise -> atom.workspace.open()
+        runs ->
+          mscEditor = atom.workspace.getActiveTextEditor()
+          mscEditor.setGrammar(atom.grammars.grammarForScopeName("source.mscgen"))
+          mscEditor.setText """
+          /* just a sample */
+          msc {
+            a,b,c;
+            a =>b [label="label should be there", textcolor="red", url="url won't be there"];
+            b >> a [label="spoken with truthiness"],
+            b -> c;
+          }
+          """
+          atom.commands.dispatch workspaceElement, 'mscgen-preview:translate'
+          expect(mscEditor.getText()).toBe """
+          /* just a sample */
+          a, b, c;
+
+          a => b : label should be there;
+          b >> a : spoken with truthiness,
+          b -> c;
+
+          """
+          expect(mscEditor.getGrammar().scopeName).toBe "source.msgenny"
+
+      it "translates MsGenny into Xù in the current buffer and switches the grammar", ->
+        waitsForPromise -> atom.workspace.open()
+        runs ->
+          mscEditor = atom.workspace.getActiveTextEditor()
+          mscEditor.setGrammar(atom.grammars.grammarForScopeName("source.msgenny"))
+          mscEditor.setText """
+          /* just a sample */
+          a, b, c;
+
+          a => b : label should be there;
+          b >> a : spoken with truthiness,
+          b -> c;
+          """
+          atom.commands.dispatch workspaceElement, 'mscgen-preview:translate'
+          expect(mscEditor.getText()).toBe """
+          /* just a sample */
+          msc {
+            a,
+            b,
+            c;
+
+            a => b [label="label should be there"];
+            b >> a [label="spoken with truthiness"],
+            b -> c;
+          }
+          """
+          expect(mscEditor.getGrammar().scopeName).toBe "source.xu"
+    describe "when mscgen-preview:abstract-syntax-tree is triggered in an unassociated buffer", ->
+      it "translates the current program into json and switches the grammar", ->
+        waitsForPromise -> atom.workspace.open()
+
+        runs ->
+          mscEditor = atom.workspace.getActiveTextEditor()
+          mscEditor.setGrammar(atom.grammars.grammarForScopeName("source.msgenny"))
+          mscEditor.setText "a;"
+          atom.commands.dispatch workspaceElement, 'mscgen-preview:abstract-syntax-tree'
+          expect(mscEditor.getText()).toBe """
+          {
+            "meta": {
+              "extendedOptions": false,
+              "extendedArcTypes": false,
+              "extendedFeatures": false
+            },
+            "entities": [
+              {
+                "name": "a"
+              }
+            ]
+          }
+          """
+          expect(mscEditor.getGrammar().scopeName).toBe "source.json"
+
+  describe "when mscgen-preview:translate is triggered in a buffer associated to a file", ->
+    beforeEach ->
+      fixturesPath = path.join(__dirname, 'fixtures')
+      tempPath     = temp.mkdirSync('atom')
+      wrench.copyDirSyncRecursive(fixturesPath, tempPath, forceDelete: true)
+      atom.project.setPaths([tempPath])
+
+      workspaceElement = atom.views.getView(atom.workspace)
+      jasmine.attachToDOM(workspaceElement)
+
+    it "saves the MsGenny variant of the MscGen program and opens it", ->
+      outputPath = temp.path() + 'subdir/序列圖.msgenny'
+
+      waitsForPromise -> atom.workspace.open('subdir/序列圖.xu')
+      runs ->
+        spyOn(atom, 'showSaveDialogSync').andReturn(outputPath)
+        atom.commands.dispatch workspaceElement, 'mscgen-preview:translate'
+      waitsFor ->
+        fs.existsSync(outputPath)
+      runs ->
+        expect(fs.isFileSync(outputPath)).toBe true
+        writtenFile = fs.readFileSync outputPath
+        expect(writtenFile).toContain """wordwraparcs="true";
+
+        c : Consumer, api : Super API;
+
+        c =>> api : GET /;
+        api >> c : interfaces;
+        c loop api : for each interface {
+          c =>> api : GET interface;
+          c alt api : Happy day {
+            api >> c : 200: response;
+            --- : error;
+            api >> c : error;
+          };
+        };
+        """

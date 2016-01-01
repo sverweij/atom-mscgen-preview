@@ -1,7 +1,7 @@
-path = require 'path'
-fs = require 'fs-plus'
-temp = require 'temp'
-wrench = require 'wrench'
+path              = require 'path'
+fs                = require 'fs-plus'
+temp              = require 'temp'
+wrench            = require 'wrench'
 MscGenPreviewView = require '../lib/mscgen-preview-view'
 
 describe "MscGenPreviewView", ->
