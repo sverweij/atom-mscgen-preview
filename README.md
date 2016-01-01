@@ -20,6 +20,13 @@ Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` files
     Xù with a simplified syntax. And a little less features. The
     [MsGenny wiki page](https://github.com/sverweij/mscgen_js/blob/master/wikum/msgenny.md)
     has more information.
+- Frictionless conversion MscGen/ Xù <=> MsGenny    
+  - Check the editor context menu for
+    - `MsGenny -> MscGen/ Xù`,
+    - `MscGen -> MsGenny` and
+    - `Xù -> MsGenny`
+  - or use `Mscgen Preview: Translate` in the command palette.
+
 
 ## License information
 This software is free software [licensed under GPL-3.0](LICENSE.md). This means (a.o.) you _can_ use
