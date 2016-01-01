@@ -114,7 +114,6 @@ module.exports =
       if error
         console.error error
       else
-        console.log result
         editor.setText(result)
 
   toggle: ->
