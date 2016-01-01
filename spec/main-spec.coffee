@@ -294,6 +294,37 @@ describe "MscGen preview package", ->
           }
           """
           expect(mscEditor.getGrammar().scopeName).toBe "source.xu"
+      it "formats MscGen in the current buffer", ->
+        waitsForPromise -> atom.workspace.open()
+        runs ->
+          mscEditor = atom.workspace.getActiveTextEditor()
+          mscEditor.setGrammar(atom.grammars.grammarForScopeName("source.mscgen"))
+          mscEditor.setText """
+          /* just a sample */
+          msc {
+            a,b,c;
+            a =>b [label="label should be there",
+
+
+            textcolor="red", url="url won't be there"];
+            # comment that will disappear
+            b     >> a [label="spoken with truthiness"],b->c;
+          }
+          """
+          atom.commands.dispatch workspaceElement, 'mscgen-preview:auto-format'
+          expect(mscEditor.getText()).toBe """/* just a sample */
+          msc {
+            a,
+            b,
+            c;
+
+            a => b [label="label should be there", url="url won't be there", textcolor="red"];
+            b >> a [label="spoken with truthiness"],
+          b -> c;
+          }
+          """
+          expect(mscEditor.getGrammar().scopeName).toBe "source.mscgen"
+
     describe "when mscgen-preview:abstract-syntax-tree is triggered in an unassociated buffer", ->
       it "translates the current program into json and switches the grammar", ->
         waitsForPromise -> atom.workspace.open()
