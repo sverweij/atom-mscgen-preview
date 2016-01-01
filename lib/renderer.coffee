@@ -4,7 +4,7 @@ scopeName2inputType  =
   'source.msgenny' : 'msgenny'
   'source.mscgen'  : 'mscgen'
   'source.xu'      : 'xu'
-  'source.ast'     : 'json'
+  'source.json'    : 'json'
 
 exports.scopeName2inputType = scopeName2inputType
 

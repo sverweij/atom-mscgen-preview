@@ -37,7 +37,7 @@ module.exports =
       'mscgen-preview:translate': =>
         @translate()
       'mscgen-preview:abstract-syntax-tree': =>
-        @translate('source.ast')
+        @translate('source.json')
       'mscgen-preview:auto-format': =>
         @autoFormat()
 
