@@ -16,15 +16,12 @@
   ]
   '.editor[data-grammar="source mscgen"]': [
     {label: 'MscGen \u2192 MsGenny', command: 'mscgen-preview:translate'}
-    {label: 'MscGen - auto format', command: 'mscgen-preview:auto-format'}
   ]
   '.editor[data-grammar="source xu"]': [
     {label: 'Xù \u2192 MsGenny', command: 'mscgen-preview:translate'}
-    {label: 'Xù - auto format', command: 'mscgen-preview:auto-format'}
   ]
   '.editor[data-grammar="source msgenny"]': [
     {label: 'MsGenny \u2192 MscGen (/ Xù)', command: 'mscgen-preview:translate'}
-    {label: 'MsGenny - auto format', command: 'mscgen-preview:auto-format'}
   ]
   # '.tree-view .file .name[data-name$=\\.mscgen]':
   #   [{label: 'MscGen Preview', command:  'mscgen-preview:preview-file'}]
