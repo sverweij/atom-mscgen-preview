@@ -320,7 +320,7 @@ describe "MscGen preview package", ->
 
             a => b [label="label should be there", url="url won't be there", textcolor="red"];
             b >> a [label="spoken with truthiness"],
-          b -> c;
+            b -> c;
           }
           """
           expect(mscEditor.getGrammar().scopeName).toBe "source.mscgen"
