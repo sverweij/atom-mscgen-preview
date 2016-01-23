@@ -3,6 +3,12 @@ exports.transform = (pSVG, pRasterType='png') ->
   lImg = document.createElement 'img'
 
   # set the svg as the source attribute
+  # It seems this happens synchronously, so in theory the canvas creation
+  # and drawing might have started before the image is loaded. However,
+  # in chrome/ electron/ atom I've never seen problems with this.
+  # When this happens the obvious approach is to use a callback or promise
+  # approach. See https://github.com/sverweij/mscgen_js/blob/master/src/script/interpreter/raster-exporter.js
+  # for an example.
   lImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent pSVG
 
   # create an (undisplayed) canvas
