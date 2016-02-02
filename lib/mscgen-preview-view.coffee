@@ -225,10 +225,13 @@ class MscGenPreviewView extends ScrollView
     if outputFilePath = atom.showSaveDialogSync(filePath)
       if 'png' == pOutputType
         svgToRaster ?= require './svg-to-raster'
-        fs.writeFileSync(outputFilePath, svgToRaster.transform @svg)
+        # fs.writeFileSync(outputFilePath, svgToRaster.transform @svg)
+        svgToRaster.transform @svg, (pResult) ->
+          fs.writeFileSync(outputFilePath, pResult)
+          atom.workspace.open(outputFilePath)
       else
         fs.writeFileSync(outputFilePath, @svg)
-      atom.workspace.open(outputFilePath)
+        atom.workspace.open(outputFilePath)
 
   isEqual: (other) ->
     @[0] is other?[0] # Compare DOM elements
