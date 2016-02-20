@@ -136,7 +136,7 @@ repository:
         include: "#number"
       }
       {
-        match: "\\b(0|1|on|off|true|false)\\b"
+        match: "\\b(0|1|on|off|true|false|auto)\\b"
         name: "constant.language.msgenny"
       }
       {
@@ -144,7 +144,7 @@ repository:
       }
     ]
   option:
-    begin: "\\b(hscale|width|arcgradient|wordwraparcs|watermark|autoscale)\\b"
+    begin: "\\b(hscale|width|arcgradient|wordwraparcs|watermark)\\b"
     beginCaptures:
       "0":
         name: "storage.modifier.msgenny"
