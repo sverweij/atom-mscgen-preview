@@ -371,8 +371,9 @@ describe "MscGen preview package", ->
         fs.existsSync(outputPath)
       runs ->
         expect(fs.isFileSync(outputPath)).toBe true
-        writtenFile = fs.readFileSync outputPath
-        expect(writtenFile).toContain """wordwraparcs="true";
+        writtenFile = fs.readFileSync outputPath, 'utf8'
+        console.log writtenFile
+        expect(writtenFile).toContain """wordwraparcs=true;
 
         c : Consumer, api : Super API;
 
