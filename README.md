@@ -1,6 +1,6 @@
 # Atom MscGen Preview package
 
-Shows the rendered MscGen to the right of the current editor using `ctrl-shift-G`.
+Shows the rendered sequence chart of the MscGen to the right of the current editor using `ctrl-shift-G`. 
 
 Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` files
 
