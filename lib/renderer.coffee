@@ -1,3 +1,4 @@
+
 mscgenjs    = null # Defer until used
 
 scopeName2inputType  =
@@ -14,6 +15,7 @@ exports.render = (pScript='', pElementId, pGrammar, pCallback) ->
   lOptions =
     elementId: pElementId
     inputType: scopeName2inputType[pGrammar.scopeName] or 'xu'
+    styleAdditions: atom.config.get('mscgen-preview.styleAdditions')
 
   mscgenjs.renderMsc pScript, lOptions, pCallback
 

@@ -18,11 +18,27 @@ module.exports =
     liveUpdate:
       type: 'boolean'
       default: true
+      order: 1
       description: 'Re-render the preview as the contents of the source changes, without requiring the source buffer to be saved. If disabled, the preview is re-rendered only when the buffer is saved to disk.'
     openPreviewInSplitPane:
       type: 'boolean'
       default: true
+      order: 2
       description: 'Open the preview in a split pane. If disabled, the preview is opened in a new tab in the same pane.'
+    styleAdditions:
+      title: 'Style Additions'
+      type: 'string'
+      default: ''
+      order: 3
+      description: '**Experimental!** Additional (CSS) styles to use for rendering the graphics. We\'d _love_ to hear your [feedback](https://github.com/sverweij/atom-mscgen-preview/issues/new?title=Feedback%20on%20\'additional%20styles\':&body=...) on this feature.'
+      enum: [
+        '',
+        '/* lazy */ text.entity-text{font-weight:bold;text-decoration:none;}text.return-text{font-style:italic}path.note{fill:#FFFFCC}rect.label-text-background{opacity:0.9}line.comment,rect.inline_expression,.inline_expression_divider,.inline_expression_label{stroke:grey}'
+        '/* bare */ line{stroke-width:1px}line.arc{stroke-width:2px}rect.entity{stroke:none}text.entity-text{text-decoration:none}.inline_expression{stroke-width:1px}.inline_expression_divider{stroke-width: 1px} .inline_expression_label{stroke-width: 1px}',
+        '/* swan */ line{stroke:#00A1DE}text{fill:#005B82}rect.entity,rect.box,path.box{fill:#00A1DE;stroke:#00A1DE;}text.box-text{fill:white}text.entity-text{font-weight:bold;fill:white;text-decoration:none;}text.return-text{font-style:italic}path.note{fill:#E77B2F;stroke:white}line.comment,rect.inline_expression,.inline_expression_divider,path.inline_expression_label{fill:white}',
+        '/* pegasse */ line{stroke:rgba(0, 43, 84, 1)}text{fill:rgba(0, 43, 84, 1)}rect.entity,rect.box,path.box{fill:rgba(0, 43, 84, 1);stroke:rgba(0, 43, 84, 1);}text.box-text{fill:white}text.entity-text{font-weight:bold;fill:white;text-decoration:none;}text.return-text{font-style:italic}path.note{fill:rgba(255, 50, 0, 1);stroke:white}line.comment,rect.inline_expression,.inline_expression_divider,path.inline_expression_label{fill:white}'
+      ]
+
 
   activate: ->
     atom.deserializers.add
