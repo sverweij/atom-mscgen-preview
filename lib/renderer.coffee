@@ -13,9 +13,10 @@ exports.render = (pScript='', pElementId, pGrammar, pCallback) ->
   mscgenjs ?= require 'mscgenjs'
 
   lOptions =
-    elementId: pElementId
-    inputType: scopeName2inputType[pGrammar.scopeName] or 'xu'
-    styleAdditions: atom.config.get('mscgen-preview.styleAdditions')
+    elementId              : pElementId
+    inputType              : scopeName2inputType[pGrammar.scopeName] or 'xu'
+    styleAdditions         : atom.config.get('mscgen-preview.styleAdditions')
+    mirrorEntitiesOnBottom : atom.config.get('mscgen-preview.mirrorEntities')
 
   mscgenjs.renderMsc pScript, lOptions, pCallback
 
