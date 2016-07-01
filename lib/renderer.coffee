@@ -15,9 +15,9 @@ exports.render = (pScript='', pElementId, pGrammar, pCallback) ->
   lOptions =
     elementId              : pElementId
     inputType              : scopeName2inputType[pGrammar.scopeName] or 'xu'
-    styleAdditions         : atom.config.get('mscgen-preview.styleAdditions')
     mirrorEntitiesOnBottom : atom.config.get('mscgen-preview.mirrorEntities')
-
+    additionalTemplate     : atom.config.get('mscgen-preview.cannedStyleTemplate')
+  
   mscgenjs.renderMsc pScript, lOptions, pCallback
 
 exports.translate = (pScript='', pScopeFrom, pScopeTo, pCallback) ->

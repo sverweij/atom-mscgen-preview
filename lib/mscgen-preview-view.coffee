@@ -9,6 +9,8 @@ uuid                 = null
 renderer             = null # Defer until used
 errRenderer          = null # Defer until used
 svgToRaster          = null # Defer until used
+latestKnownEditorId  = null
+svgWrapperElementId  = null
 
 module.exports =
 class MscGenPreviewView extends ScrollView
@@ -141,11 +143,29 @@ class MscGenPreviewView extends ScrollView
 
   renderMscText: (text) ->
     uuid ?= require 'node-uuid'
-    lElementId = uuid.v4()
-    @html("<div id=#{lElementId}></div>")
+    # should be unique within atom to prevent duplicate id's within the
+    # editor (which renders the stuff into the first element only)
+    #
+    # should be unique altogether because upon export they might be placed on the
+    # same page together, and twice the same id is bound to have undesired
+    # effects
+    #
+    # It's good enough to do this once for each editor instance
+    if !svgWrapperElementId? or latestKnownEditorId != @editorId
+      svgWrapperElementId = uuid.v4()
+      latestKnownEditorId = @editorId
+      # HACK: remove the existing bbox calculation svg, so the renderer
+      #       generates a new one with an id class matching the editor
+      #       hack because
+      #       - it relies on mscgenjs-core internals
+      #       - the bboxer svg is a hack within mscgenjs-core in the
+      #         first place
+      document.getElementById('mscgen_js-svg-bboxer')?.remove()
+
+    @html("<div id=#{svgWrapperElementId}></div>")
     @svg = null # HACK
     renderer ?= require "./renderer"
-    renderer.render text, lElementId, @getGrammar(), (error, svg) =>
+    renderer.render text, svgWrapperElementId, @getGrammar(), (error, svg) =>
       if error
         @showError(error)
       else
