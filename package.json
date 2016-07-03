@@ -1,6 +1,6 @@
 {
   "name": "mscgen-preview",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "main": "./lib/main",
   "description": "Open a rendered sequence chart of the MscGen in the current editor with `ctrl-shift-G`.",
   "repository": {
