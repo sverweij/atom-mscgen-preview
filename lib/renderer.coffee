@@ -17,11 +17,11 @@ exports.render = (pScript='', pElementId, pGrammar, pCallback) ->
     inputType              : scopeName2inputType[pGrammar.scopeName] or 'xu'
     mirrorEntitiesOnBottom : atom.config.get('mscgen-preview.mirrorEntities')
     additionalTemplate     : atom.config.get('mscgen-preview.cannedStyleTemplate')
-  
+
   mscgenjs.renderMsc pScript, lOptions, pCallback
 
 exports.translate = (pScript='', pScopeFrom, pScopeTo, pCallback) ->
-  mscgenjs ?= require 'mscgenjs'
+  mscgenjs ?= require 'mscgenjs/index-lazy'
 
   lOptions =
     inputType: scopeName2inputType[pScopeFrom] or 'msgenny'
