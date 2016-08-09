@@ -44,6 +44,7 @@ module.exports =
         'classic'
         'pegasse'
         'cygne'
+        'fountainpen'
       ]
 
   activate: ->
