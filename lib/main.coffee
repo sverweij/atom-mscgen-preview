@@ -1,6 +1,7 @@
 url      = require 'url'
 fs       = require 'fs-plus'
 path     = require 'path'
+mscgenjs = require 'mscgenjs/index-lazy'
 renderer = null
 
 MscGenPreviewView = null # Defer until used
@@ -36,16 +37,7 @@ module.exports =
       default: ''
       order: 4
       description: '**Experimental!** Additional named styles to use for rendering the graphics. We\'d _love_ to hear your [feedback](https://github.com/sverweij/atom-mscgen-preview/issues/new?title=Feedback%20on%20\'predefined%20styles\':&body=...) on this feature.'
-      enum: [
-        ''
-        'lazy'
-        'inverted'
-        'grayscaled'
-        'classic'
-        'pegasse'
-        'cygne'
-        'fountainpen'
-      ]
+      enum: [''].concat mscgenjs.allowedValues.namedStyle.map((pValue) -> pValue.name)
 
   activate: ->
     atom.deserializers.add
