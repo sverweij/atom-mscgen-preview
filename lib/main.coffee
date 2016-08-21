@@ -37,7 +37,7 @@ module.exports =
       default: ''
       order: 4
       description: '**Experimental!** Additional named styles to use for rendering the graphics. We\'d _love_ to hear your [feedback](https://github.com/sverweij/atom-mscgen-preview/issues/new?title=Feedback%20on%20\'predefined%20styles\':&body=...) on this feature.'
-      enum: [''].concat mscgenjs.allowedValues.namedStyle.map((pValue) -> pValue.name)
+      enum: [''].concat mscgenjs.getAllowedValues().namedStyle.map((pValue) -> pValue.name)
 
   activate: ->
     atom.deserializers.add
