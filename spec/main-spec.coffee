@@ -224,7 +224,7 @@ describe "MscGen preview package", ->
       runs ->
         expect(preview[0].innerHTML).toContain """<span style="text-decoration:underline">&lt;</span>puthaken&gt;spul&lt;/puthaken&gt;"""
         expect(preview[0].innerHTML).toContain """error on line 1, column 1"""
-        expect(preview[0].innerHTML).toContain """Expected "msc", comment, lineend or whitespace but "&lt;" found."""
+        expect(preview[0].innerHTML).toContain """Expected "msc", comment, lineend, or whitespace but "&lt;" found."""
 
   describe "translations in buffers not associated to files", ->
     beforeEach ->
