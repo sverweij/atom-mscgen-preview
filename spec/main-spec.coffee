@@ -197,12 +197,12 @@ describe "MscGen preview package", ->
       expectPreviewInSplitPane()
 
       runs ->
-        expect(preview.getTitle()).toBe 'atest.mscgen Preview'
+        expect(preview.getTitle()).toBe 'atest.mscgen preview'
         preview.onDidChangeTitle(titleChangedCallback)
         fs.renameSync(atom.workspace.getActiveTextEditor().getPath(), path.join(path.dirname(atom.workspace.getActiveTextEditor().getPath()), 'atest2.mscgen'))
 
       waitsFor ->
-        preview.getTitle() is "atest2.mscgen Preview"
+        preview.getTitle() is "atest2.mscgen preview"
 
       runs ->
         expect(titleChangedCallback).toHaveBeenCalled()

@@ -15,7 +15,23 @@ svgWrapperElementId  = null
 module.exports =
 class MscGenPreviewView extends ScrollView
   @content: ->
-    @div class: 'mscgen-preview native-key-bindings', tabindex: -1
+    @div class: 'mscgen-preview native-key-bindings', tabindex: -1, =>
+      @div class: 'image-controls', outlet: 'imageControls', =>
+        @div class: 'image-controls-group', =>
+          @a outlet: 'whiteTransparentBackgroundButton', class: 'image-controls-color-white', value: 'white', =>
+            @text 'white'
+          @a outlet: 'blackTransparentBackgroundButton', class: 'image-controls-color-black', value: 'black', =>
+            @text 'black'
+          @a outlet: 'transparentTransparentBackgroundButton', class: 'image-controls-color-transparent', value: 'transparent', =>
+            @text 'transparent'
+        @div class: 'image-controls-group btn-group', =>
+          @button class: 'btn', outlet: 'zoomOutButton', '-'
+          @button class: 'btn reset-zoom-button', outlet: 'resetZoomButton', '100%'
+          @button class: 'btn', outlet: 'zoomInButton', '+'
+        @div class: 'image-controls-group btn-group', =>
+          @button class: 'btn', outlet: 'zoomToFitButton', 'Zoom to fit'
+
+      @div class: 'image-container', background: 'transparent', outlet: 'imageContainer'
 
   constructor: ({@editorId, @filePath}) ->
     super
@@ -23,6 +39,15 @@ class MscGenPreviewView extends ScrollView
     @disposables = new CompositeDisposable
     @loaded = false
     @svg = null
+
+    @disposables.add atom.tooltips.add @whiteTransparentBackgroundButton[0], title: "Use white transparent background"
+    @disposables.add atom.tooltips.add @blackTransparentBackgroundButton[0], title: "Use black transparent background"
+    @disposables.add atom.tooltips.add @transparentTransparentBackgroundButton[0], title: "Use transparent background"
+
+    @zoomInButton.on 'click', => @zoomIn()
+    @zoomOutButton.on 'click', => @zoomOut()
+    @resetZoomButton.on 'click', => @resetZoom()
+    @zoomToFitButton.on 'click', => @zoomToFit()
 
   attached: ->
     return if @isAttached
@@ -36,6 +61,11 @@ class MscGenPreviewView extends ScrollView
       else
         @disposables.add atom.packages.onDidActivateInitialPackages =>
           @subscribeToFilePath(@filePath)
+
+    if @getPane()
+      @imageControls.find('a').on 'click', (e) =>
+        @changeBackground $(e.target).attr 'value'
+
 
   serialize: ->
     deserializer: 'MscGenPreviewView'
@@ -101,14 +131,10 @@ class MscGenPreviewView extends ScrollView
         @saveAs('png')
       'core:copy': (event) =>
         event.stopPropagation() if @copyToClipboard()
-      'mscgen-preview:zoom-in': =>
-        zoomLevel = parseFloat(@css('zoom')) or 1
-        @css('zoom', zoomLevel + .1)
-      'mscgen-preview:zoom-out': =>
-        zoomLevel = parseFloat(@css('zoom')) or 1
-        @css('zoom', zoomLevel - .1)
-      'mscgen-preview:reset-zoom': =>
-        @css('zoom', 1)
+      'mscgen-preview:zoom-in': => @zoomIn()
+      'mscgen-preview:zoom-out': => @zoomOut()
+      'mscgen-preview:reset-zoom': => @resetZoom()
+      'mscgen-preview:zoom-to-fit': => @zoomToFit()
 
     changeHandler = =>
       @renderMsc()
@@ -162,8 +188,10 @@ class MscGenPreviewView extends ScrollView
       #         first place
       document.getElementById('mscgen_js-svg-bboxer')?.remove()
 
-    @html("<div id=#{svgWrapperElementId}></div>")
-    @svg = null # HACK
+    @imageContainer.attr('id', svgWrapperElementId)
+    @imageContainer.html('')
+
+    @svg = null
     renderer ?= require "./renderer"
     renderer.render text, svgWrapperElementId, @getGrammar(), (error, svg) =>
       if error
@@ -171,7 +199,18 @@ class MscGenPreviewView extends ScrollView
       else
         @loading = false
         @loaded = true
-        @svg = svg # HACK
+        @svg = svg
+
+        @renderedSVG = @imageContainer.find('svg')
+        @originalWidth = @renderedSVG.attr('width')
+        @originalHeight = @renderedSVG.attr('height')
+
+        if @mode is 'zoom-to-fit'
+          @renderedSVG.attr('width', '100%')
+          @renderedSVG.attr('height', '100%')
+        else
+          @setZoom @zoomFactor
+
         @emitter.emit 'did-change-mscgen'
         @originalTrigger('mscgen-preview:msc-changed')
 
@@ -183,11 +222,11 @@ class MscGenPreviewView extends ScrollView
 
   getTitle: ->
     if @file?
-      "#{path.basename(@getPath())} Preview"
+      "#{path.basename(@getPath())} preview"
     else if @editor?
-      "#{@editor.getTitle()} Preview"
+      "#{@editor.getTitle()} preview"
     else
-      "Msc Preview"
+      "Msc preview"
 
   getIconName: ->
     "Msc"
@@ -214,11 +253,11 @@ class MscGenPreviewView extends ScrollView
     errRenderer ?= require './err-renderer'
 
     @getMscSource().then (source) =>
-      @html(errRenderer.renderError source, error.location, error.message) if source?
+      @imageContainer.html(errRenderer.renderError source, error.location, error.message) if source?
 
   showLoading: ->
     @loading = true
-    @html $$$ ->
+    @imageContainer.html $$$ ->
       @div class: 'msc-spinner', 'Loading msc\u2026'
 
   copyToClipboard: ->
@@ -245,13 +284,74 @@ class MscGenPreviewView extends ScrollView
     if outputFilePath = atom.showSaveDialogSync(filePath)
       if 'png' == pOutputType
         svgToRaster ?= require './svg-to-raster'
-        # fs.writeFileSync(outputFilePath, svgToRaster.transform @svg)
+
         svgToRaster.transform @svg, (pResult) ->
           fs.writeFileSync(outputFilePath, pResult)
           atom.workspace.open(outputFilePath)
       else
         fs.writeFileSync(outputFilePath, @svg)
         atom.workspace.open(outputFilePath)
+
+  # image control functions
+  # Retrieves this view's pane.
+  #
+  # Returns a {Pane}.
+  getPane: ->
+    @parents('.pane')[0]
+  zoomOut: ->
+    @adjustZoom -.1
+
+  zoomIn: ->
+    @adjustZoom .1
+
+  adjustZoom: (delta)->
+    zoomLevel = parseFloat(@renderedSVG.css('zoom')) or 1
+    if (zoomLevel + delta) > 0
+      @setZoom (zoomLevel + delta)
+
+  setZoom: (factor) ->
+    return unless @loaded and @isVisible()
+
+    factor ?= 1
+
+    if @mode is 'zoom-to-fit'
+      @mode = 'zoom-manual'
+      @zoomToFitButton.removeClass 'selected'
+    else if @mode is 'reset-zoom'
+      @mode = 'zoom-manual'
+
+    @renderedSVG.attr('width', @originalWidth)
+    @renderedSVG.attr('height', @originalHeight)
+    @renderedSVG.css('zoom', factor)
+    @resetZoomButton.text(Math.round((factor) * 100) + '%')
+    @zoomFactor = factor
+
+  # Zooms the image to its normal width and height.
+  resetZoom: ->
+    return unless @loaded and @isVisible()
+
+    @mode = 'reset-zoom'
+    @zoomToFitButton.removeClass 'selected'
+    @setZoom 1
+    @resetZoomButton.text('100%')
+
+  # Zooms to fit the image
+  zoomToFit: ->
+    return unless @loaded and @isVisible()
+
+    @setZoom 1
+    @mode = 'zoom-to-fit'
+    @zoomToFitButton.addClass 'selected'
+    @renderedSVG.attr('width', '100%')
+    @renderedSVG.attr('height', '100%')
+    @resetZoomButton.text('Auto')
+
+  # Changes the background color of the image view.
+  #
+  # color - A {String} that gets used as class name.
+  changeBackground: (color) ->
+    return unless @loaded and @isVisible() and color
+    @imageContainer.attr('background', color)
 
   isEqual: (other) ->
     @[0] is other?[0] # Compare DOM elements

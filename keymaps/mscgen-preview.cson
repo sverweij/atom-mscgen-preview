@@ -7,6 +7,7 @@
   'cmd--': 'mscgen-preview:zoom-out'
   'cmd-_': 'mscgen-preview:zoom-out'
   'cmd-0': 'mscgen-preview:reset-zoom'
+  'cmd-9': 'mscgen-preview:zoom-to-fit'
 
 '.platform-win32 .mscgen-preview, .platform-linux .mscgen-preview':
   'ctrl-+': 'mscgen-preview:zoom-in'
@@ -14,3 +15,4 @@
   'ctrl--': 'mscgen-preview:zoom-out'
   'ctrl-_': 'mscgen-preview:zoom-out'
   'ctrl-0': 'mscgen-preview:reset-zoom'
+  'ctrl-9': 'mscgen-preview:zoom-to-fit'
