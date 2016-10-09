@@ -1,8 +1,8 @@
-# Atom MscGen Preview package
+# MscGen Preview
 
-Shows the rendered sequence chart of the MscGen to the right of the current editor when you press `ctrl-shift-G`. 
+Write and preview sequence charts with MscGen and its brethren. Shortcut: `ctrl-shift-G`.
 
-Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` files
+Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` extensions.
 
 ![animated gif demoing live preview of a simple sequence chart](https://raw.githubusercontent.com/sverweij/atom-mscgen-preview/master/assets/atom-mscgen-preview.gif)
 
