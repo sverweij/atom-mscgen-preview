@@ -3,7 +3,6 @@ fs                = require 'fs-plus'
 temp              = require 'temp'
 wrench            = require 'wrench'
 MscGenPreviewView = require '../lib/mscgen-preview-view'
-{$}               = require 'atom-space-pen-views'
 
 describe "MscGen preview package", ->
   [workspaceElement, preview] = []
@@ -85,7 +84,7 @@ describe "MscGen preview package", ->
       expect(previewPane.getActiveItem()).toBeUndefined()
 
     it "closes the existing preview when toggle is triggered on it and it has focus", ->
-      [editorPane, previewPane] = atom.workspace.getPanes()
+      previewPane = atom.workspace.getPanes()[1]
       previewPane.activate()
 
       atom.commands.dispatch workspaceElement, 'mscgen-preview:toggle'

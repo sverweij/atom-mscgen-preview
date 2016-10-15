@@ -5,7 +5,7 @@ wrench            = require 'wrench'
 MscGenPreviewView = require '../lib/mscgen-preview-view'
 
 describe "MscGenPreviewView", ->
-  [file, preview, workspaceElement] = []
+  [preview, workspaceElement] = []
 
   beforeEach ->
     filePath = atom.project.getDirectories()[0].resolve('subdir/asample.mscgen')

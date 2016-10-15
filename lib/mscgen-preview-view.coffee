@@ -78,7 +78,7 @@ class MscGenPreviewView extends ScrollView
   onDidChangeTitle: (callback) ->
     @emitter.on 'did-change-title', callback
 
-  onDidChangeModified: (callback) ->
+  onDidChangeModified: () ->
     # No op to suppress deprecation warning
     new Disposable
 
