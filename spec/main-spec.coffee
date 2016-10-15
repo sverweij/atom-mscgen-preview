@@ -1,7 +1,6 @@
 path              = require 'path'
 fs                = require 'fs-plus'
 temp              = require 'temp'
-wrench            = require 'wrench'
 MscGenPreviewView = require '../lib/mscgen-preview-view'
 
 describe "MscGen preview package", ->
@@ -10,7 +9,7 @@ describe "MscGen preview package", ->
   beforeEach ->
     fixturesPath = path.join(__dirname, 'fixtures')
     tempPath = temp.mkdirSync('atom')
-    wrench.copyDirSyncRecursive(fixturesPath, tempPath, forceDelete: true)
+    fs.copySync(fixturesPath, tempPath)
     atom.project.setPaths([tempPath])
 
     jasmine.useRealClock()
@@ -353,7 +352,7 @@ describe "MscGen preview package", ->
     beforeEach ->
       fixturesPath = path.join(__dirname, 'fixtures')
       tempPath     = temp.mkdirSync('atom')
-      wrench.copyDirSyncRecursive(fixturesPath, tempPath, forceDelete: true)
+      fs.copySync(fixturesPath, tempPath)
       atom.project.setPaths([tempPath])
 
       workspaceElement = atom.views.getView(atom.workspace)
