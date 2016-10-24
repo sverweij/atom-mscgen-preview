@@ -131,10 +131,27 @@ class MscGenPreviewView extends ScrollView
         @saveAs('png')
       'core:copy': (event) =>
         event.stopPropagation() if @copyToClipboard()
+      'mscgen-preview:style-none': (event) =>
+        event.stopPropagation()
+        @setStyle('')
+        @renderMsc()
+      'mscgen-preview:style-lazy': (event) =>
+        event.stopPropagation()
+        @setStyle('lazy')
+        @renderMsc()
+      'mscgen-preview:style-classic': (event) =>
+        event.stopPropagation()
+        @setStyle('classic')
+        @renderMsc()
+      'mscgen-preview:style-fountainpen': (event) =>
+        event.stopPropagation()
+        @setStyle('fountainpen')
+        @renderMsc()
       'mscgen-preview:zoom-in': => @zoomIn()
       'mscgen-preview:zoom-out': => @zoomOut()
       'mscgen-preview:reset-zoom': => @resetZoom()
       'mscgen-preview:zoom-to-fit': => @zoomToFit()
+
 
     changeHandler = =>
       @renderMsc()
@@ -291,6 +308,12 @@ class MscGenPreviewView extends ScrollView
       else
         fs.writeFileSync(outputFilePath, @svg)
         atom.workspace.open(outputFilePath)
+
+  setStyle: (pStyle) ->
+    return if @loading or not @svg
+
+    atom.config.set('mscgen-preview.cannedStyleTemplate', pStyle)
+    @emitter.emit 'did-change-title'
 
   # image control functions
   # Retrieves this view's pane.
