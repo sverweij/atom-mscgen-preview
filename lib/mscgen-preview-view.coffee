@@ -133,8 +133,14 @@ class MscGenPreviewView extends ScrollView
         event.stopPropagation() if @copyToClipboard()
       'mscgen-preview:style-none': (event) =>
         event.stopPropagation()
-        @setStyle('')
-        @renderMsc()
+        # workaround for mscgenjs/mscgenjs-core #26:
+        # first set a non-wobbly named style so renderMagic
+        # is straight again, and when that is done
+        # set the style to none/ ''
+        @setStyle('lazy')
+        @renderMsc().then =>
+          @setStyle('')
+          @renderMsc()
       'mscgen-preview:style-lazy': (event) =>
         event.stopPropagation()
         @setStyle('lazy')
@@ -313,7 +319,6 @@ class MscGenPreviewView extends ScrollView
     return if @loading or not @svg
 
     atom.config.set('mscgen-preview.cannedStyleTemplate', pStyle)
-    @emitter.emit 'did-change-title'
 
   # image control functions
   # Retrieves this view's pane.
