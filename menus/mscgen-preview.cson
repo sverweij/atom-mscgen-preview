@@ -4,15 +4,6 @@
     'label': 'MscGen Preview'
     'submenu': [
       {'label': 'Toggle Preview', 'command': 'mscgen-preview:toggle'}
-      {
-        label: 'Select a style'
-        submenu: [
-          {label: 'none',               command:'mscgen-preview:style-none'}
-          {label: 'lazy',               command:'mscgen-preview:style-lazy'}
-          {label: 'classic',            command:'mscgen-preview:style-classic'}
-          {label: 'wobbly fountainpen', command:'mscgen-preview:style-fountainpen'}
-        ]
-      }
     ]
   ]
 ]
@@ -24,7 +15,7 @@
     {
       label: 'Style'
       submenu: [
-        {label: 'none',               command:'mscgen-preview:style-none'}
+        {label: 'basic',              command:'mscgen-preview:style-basic'}
         {label: 'lazy',               command:'mscgen-preview:style-lazy'}
         {label: 'classic',            command:'mscgen-preview:style-classic'}
         {label: 'wobbly fountainpen', command:'mscgen-preview:style-fountainpen'}

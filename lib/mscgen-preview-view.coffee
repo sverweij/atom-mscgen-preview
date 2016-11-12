@@ -131,16 +131,10 @@ class MscGenPreviewView extends ScrollView
         @saveAs('png')
       'core:copy': (event) =>
         event.stopPropagation() if @copyToClipboard()
-      'mscgen-preview:style-none': (event) =>
+      'mscgen-preview:style-basic': (event) =>
         event.stopPropagation()
-        # workaround for mscgenjs/mscgenjs-core #26:
-        # first set a non-wobbly named style so renderMagic
-        # is straight again, and when that is done
-        # set the style to none/ ''
-        @setStyle('lazy')
-        @renderMsc().then =>
-          @setStyle('')
-          @renderMsc()
+        @setStyle('basic')
+        @renderMsc()
       'mscgen-preview:style-lazy': (event) =>
         event.stopPropagation()
         @setStyle('lazy')
