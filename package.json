@@ -19,7 +19,6 @@
   },
   "readmeFilename": "README.md",
   "dependencies": {
-    "amdefine": "1.0.0",
     "node-uuid": "1.4.7",
     "atom-space-pen-views": "2.2.0",
     "fs-plus": "2.9.3",
