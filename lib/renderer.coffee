@@ -17,6 +17,7 @@ exports.render = (pScript='', pElementId, pGrammar, pCallback) ->
     inputType              : scopeName2inputType[pGrammar.scopeName] or 'xu'
     mirrorEntitiesOnBottom : atom.config.get('mscgen-preview.mirrorEntities')
     additionalTemplate     : atom.config.get('mscgen-preview.cannedStyleTemplate')
+    regularArcTextVerticalAlignment: atom.config.get('mscgen-preview.regularArcTextVerticalAlignment')
 
   mscgenjs.renderMsc pScript, lOptions, pCallback
 

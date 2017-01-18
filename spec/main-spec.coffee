@@ -185,7 +185,7 @@ describe "MscGen preview package", ->
       waitsFor "mscgen to be re-rendered after file changed", ->
         preview.renderMscText.callCount > 0
 
-  describe "when the editor's path changes on #win32 and #darwin", ->
+  xdescribe "when the editor's path changes on #win32 and #darwin", ->
     it "updates the preview's title", ->
       titleChangedCallback = jasmine.createSpy('titleChangedCallback')
 

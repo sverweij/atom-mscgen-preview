@@ -31,12 +31,19 @@ module.exports =
       default: false
       order: 3
       description: 'Also show entities on the chart\'s bottom'
+    regularArcTextVerticalAlignment:
+      title: ''
+      type: 'string'
+      default: 'middle'
+      order: 4
+      description: '**Experimental!** Determine how labels of regular arcs should be vertically aligned'
+      enum: mscgenjs.getAllowedValues().regularArcTextVerticalAlignment.map((pValue) -> pValue.name)
     cannedStyleTemplate:
       title: 'Predefined styles'
       type: 'string'
       default: 'basic'
-      order: 4
-      description: '**Experimental!** Additional named styles to use for rendering the graphics. We\'d _love_ to hear your [feedback](https://github.com/sverweij/atom-mscgen-preview/issues/new?title=Feedback%20on%20\'predefined%20styles\':&body=...) on this feature.'
+      order: 5
+      description: 'Additional named styles to use for rendering the graphics. We\'d _love_ to hear your [feedback](https://github.com/sverweij/atom-mscgen-preview/issues/new?title=Feedback%20on%20\'predefined%20styles\':&body=...) on this feature.'
       enum: mscgenjs.getAllowedValues().namedStyle.map((pValue) -> pValue.name)
 
   activate: ->
