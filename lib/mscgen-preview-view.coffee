@@ -185,7 +185,7 @@ class MscGenPreviewView extends ScrollView
       Promise.resolve(null)
 
   renderMscText: (text) ->
-    uuid ?= require 'node-uuid'
+    uuid ?= require 'uuid'
     # should be unique within atom to prevent duplicate id's within the
     # editor (which renders the stuff into the first element only)
     #
