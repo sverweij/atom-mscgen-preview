@@ -46,6 +46,9 @@ module.exports =
       description: 'Additional named styles to use for rendering the graphics. We\'d _love_ to hear your [feedback](https://github.com/sverweij/atom-mscgen-preview/issues/new?title=Feedback%20on%20\'predefined%20styles\':&body=...) on this feature.'
       enum: mscgenjs.getAllowedValues().namedStyle.map((pValue) -> pValue.name)
 
+  deserialize: (pState) ->
+    createMscGenPreviewView pState
+
   activate: ->
     atom.deserializers.add
       name: 'MscGenPreviewView'

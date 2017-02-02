@@ -68,7 +68,7 @@ class MscGenPreviewView extends ScrollView
 
 
   serialize: ->
-    deserializer: 'MscGenPreviewView'
+    deserializer: 'deserializeMscGenPreviewView'
     filePath: @getPath() ? @filePath
     editorId: @editorId
 
