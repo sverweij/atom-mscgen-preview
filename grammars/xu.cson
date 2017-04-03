@@ -140,7 +140,7 @@ repository:
     ]
   option:
     comment: "option"
-    begin: "\\b(hscale|width|arcgradient|wordwraparcs|watermark)\\b"
+    begin: "\\b(hscale|width|arcgradient|wordwraparcs|wordwrapentities|wordwrapboxes|watermark)\\b"
     beginCaptures:
       "0":
         name: "storage.modifier.xu"
