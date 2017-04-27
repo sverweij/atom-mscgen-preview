@@ -1,6 +1,6 @@
 {
   "name": "mscgen-preview",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "main": "./lib/main",
   "description": "Write and preview sequence charts with MscGen and its brethren. Shortcut: `ctrl-shift-G`.",
   "repository": {
