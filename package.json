@@ -26,7 +26,7 @@
     "atom-space-pen-views": "2.2.0",
     "fs-plus": "3.0.0",
     "underscore-plus": "1.6.6",
-    "mscgenjs": "1.11.0"
+    "mscgenjs": "1.12.1"
   },
   "devDependencies": {
     "coffeelint": "1.16.0",
