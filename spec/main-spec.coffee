@@ -256,7 +256,9 @@ describe "MscGen preview package", ->
           atom.commands.dispatch workspaceElement, 'mscgen-preview:translate'
           expect(mscEditor.getText()).toBe """
           /* just a sample */
-          a, b, c;
+          a,
+          b,
+          c;
 
           a => b : label should be there;
           b >> a : spoken with truthiness,
@@ -272,7 +274,9 @@ describe "MscGen preview package", ->
           mscEditor.setGrammar(atom.grammars.grammarForScopeName("source.msgenny"))
           mscEditor.setText """
           /* just a sample */
-          a, b, c;
+          a,
+          b,
+          c;
 
           a => b : label should be there;
           b >> a : spoken with truthiness,
@@ -373,7 +377,8 @@ describe "MscGen preview package", ->
         # console.log writtenFile
         expect(writtenFile).toContain """wordwraparcs=true;
 
-        c : Consumer, api : Super API;
+        c : Consumer,
+        api : Super API;
 
         c =>> api : GET /;
         api >> c : interfaces;
