@@ -203,7 +203,7 @@ class MscGenPreviewView extends ScrollView
       #       - it relies on mscgenjs-core internals
       #       - the bboxer svg is a hack within mscgenjs-core in the
       #         first place
-      document.getElementById('mscgen_js-svg-bboxer')?.remove()
+      document.getElementById('mscgenjsbboxer')?.remove()
 
     @imageContainer.attr('id', svgWrapperElementId)
     @imageContainer.html('')
