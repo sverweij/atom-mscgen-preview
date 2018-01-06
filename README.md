@@ -1,6 +1,6 @@
 # MscGen Preview
 
-Write and preview sequence charts with MscGen and its brethren. Shortcut: `ctrl-shift-G`.
+Write and preview sequence charts with MscGen and its brethren with `ctrl-shift-G`.
 
 Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` extensions.
 
@@ -11,7 +11,7 @@ Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` extensions.
 - **realtime rendering** of your sequence chart
 - **SVG export** - to file or clipboard
 - **PNG export** - to file
-- Uses the pure javascript **[mscgen_js](https://github.com/sverweij/mscgen_js)** package for parsing and rendering, so apart from **MscGen** (`*.mscgen`, `*.mscin`, `*.msc`) it supports
+- Uses the pure javascript **[mscgenjs](https://github.com/sverweij/mscgen_js)** package for parsing and rendering, so apart from **MscGen** (`*.mscgen`, `*.mscin`, `*.msc`) it supports
   - **Xù** (`*.xu`)    
     A little language that adds things like `alt` and `loop` to MscGen.
     See the [Xù wiki page](https://github.com/sverweij/mscgen_js/blob/master/wikum/xu.md)

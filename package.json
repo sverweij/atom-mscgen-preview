@@ -2,7 +2,7 @@
   "name": "mscgen-preview",
   "version": "1.12.8",
   "main": "./lib/main",
-  "description": "Write and preview sequence charts with MscGen and its brethren. Shortcut: `ctrl-shift-G`.",
+  "description": "Write and preview sequence charts with MscGen and its brethren with `ctrl-shift-G`.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sverweij/atom-mscgen-preview"
