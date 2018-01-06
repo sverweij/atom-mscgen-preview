@@ -1,0 +1,21 @@
+{
+  "atom-workspace atom-text-editor:not(.mini)[data-grammar='source mscgen'], atom-workspace atom-text-editor:not(.mini)[data-grammar='source msgenny'], atom-workspace atom-text-editor:not(.mini)[data-grammar='source xu']": {
+    "ctrl-shift-g": "mscgen-preview:toggle"
+  },
+  ".platform-darwin .mscgen-preview": {
+    "cmd-+": "mscgen-preview:zoom-in",
+    "cmd-=": "mscgen-preview:zoom-in",
+    "cmd--": "mscgen-preview:zoom-out",
+    "cmd-_": "mscgen-preview:zoom-out",
+    "cmd-0": "mscgen-preview:reset-zoom",
+    "cmd-9": "mscgen-preview:zoom-to-fit"
+  },
+  ".platform-win32 .mscgen-preview, .platform-linux .mscgen-preview": {
+    "ctrl-+": "mscgen-preview:zoom-in",
+    "ctrl-=": "mscgen-preview:zoom-in",
+    "ctrl--": "mscgen-preview:zoom-out",
+    "ctrl-_": "mscgen-preview:zoom-out",
+    "ctrl-0": "mscgen-preview:reset-zoom",
+    "ctrl-9": "mscgen-preview:zoom-to-fit"
+  }
+}

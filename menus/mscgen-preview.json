@@ -1,0 +1,73 @@
+{
+  "menu": [
+    {
+      "label": "Packages",
+      "submenu": [
+        {
+          "label": "MscGen Preview",
+          "submenu": [
+            {
+              "label": "Toggle Preview        ^⇧G",
+              "command": "mscgen-preview:toggle"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context-menu": {
+    ".mscgen-preview": [
+      {
+        "label": "Copy As SVG",
+        "command": "core:copy"
+      },
+      {
+        "label": "Save As SVG…",
+        "command": "core:save-as"
+      },
+      {
+        "label": "Save As PNG…",
+        "command": "mscgen-preview:save-as-png"
+      },
+      {
+        "label": "Style",
+        "submenu": [
+          {
+            "label": "basic",
+            "command": "mscgen-preview:style-basic"
+          },
+          {
+            "label": "lazy",
+            "command": "mscgen-preview:style-lazy"
+          },
+          {
+            "label": "classic",
+            "command": "mscgen-preview:style-classic"
+          },
+          {
+            "label": "wobbly fountainpen",
+            "command": "mscgen-preview:style-fountainpen"
+          }
+        ]
+      }
+    ],
+    ".editor[data-grammar='source mscgen']": [
+      {
+        "label": "MscGen → MsGenny",
+        "command": "mscgen-preview:translate"
+      }
+    ],
+    ".editor[data-grammar='source xu']": [
+      {
+        "label": "Xù → MsGenny",
+        "command": "mscgen-preview:translate"
+      }
+    ],
+    ".editor[data-grammar='source msgenny']": [
+      {
+        "label": "MsGenny → MscGen (/ Xù)",
+        "command": "mscgen-preview:translate"
+      }
+    ]
+  }
+}
