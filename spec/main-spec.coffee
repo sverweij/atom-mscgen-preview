@@ -255,16 +255,16 @@ describe "MscGen preview package", ->
           """
           atom.commands.dispatch workspaceElement, 'mscgen-preview:translate'
           expect(mscEditor.getText()).toBe """
-          /* just a sample */
-          a,
-          b,
-          c;
+/* just a sample */
+a,
+b,
+c;
 
-          a => b : label should be there;
-          b >> a : spoken with truthiness,
-          b -> c;
+a => b : "label should be there";
+b >> a : "spoken with truthiness",
+b -> c;
 
-          """
+"""
           expect(mscEditor.getGrammar().scopeName).toBe "source.msgenny"
 
       it "translates MsGenny into Xù in the current buffer and switches the grammar", ->
@@ -377,17 +377,17 @@ describe "MscGen preview package", ->
         # console.log writtenFile
         expect(writtenFile).toContain """wordwraparcs=true;
 
-        c : Consumer,
-        api : Super API;
+        c : "Consumer",
+        api : "Super API";
 
-        c =>> api : GET /;
-        api >> c : interfaces;
-        c loop api : for each interface {
-          c =>> api : GET interface;
-          c alt api : Happy day {
-            api >> c : 200: response;
-            --- : error;
-            api >> c : error;
+        c =>> api : "GET /";
+        api >> c : "interfaces";
+        c loop api : "for each interface" {
+          c =>> api : "GET interface";
+          c alt api : "Happy day" {
+            api >> c : "200: response";
+            --- : "error";
+            api >> c : "error";
           };
         };
         """

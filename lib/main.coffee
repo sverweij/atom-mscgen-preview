@@ -1,7 +1,7 @@
 url      = require 'url'
 fs       = require 'fs-plus'
 path     = require 'path'
-mscgenjs = require 'mscgenjs/index-lazy'
+mscgenjs = require 'mscgenjs/src/index-lazy'
 renderer = null
 
 MscGenPreviewView = null # Defer until used
@@ -115,31 +115,31 @@ module.exports =
     toScope = pScopeName or autoTranslations[editor.getGrammar().scopeName] or 'source.xu'
 
     renderer ?= require "./renderer"
-    renderer.translate editor.getText(), editor.getGrammar().scopeName, toScope, (error, result) ->
-      if error
-        console.error error
-      else
-        filePath = editor.getPath()
-        if filePath
-          filePath = path.join(
-            path.dirname(filePath),
-            path.basename(filePath, path.extname(filePath)),
-          ).concat('.').concat(renderer.scopeName2inputType[toScope] or 'xu')
-          if outputFilePath = atom.showSaveDialogSync(filePath)
-            fs.writeFileSync(outputFilePath, result)
-            atom.workspace.open(outputFilePath)
-        else # just a buffer => replace contents & swap grammar
-          editor.setGrammar(atom.grammars.grammarForScopeName(toScope))
-          editor.setText(result)
+    try
+      result = renderer.translate editor.getText(), editor.getGrammar().scopeName, toScope
+      filePath = editor.getPath()
+      if filePath
+        filePath = path.join(
+          path.dirname(filePath),
+          path.basename(filePath, path.extname(filePath)),
+        ).concat('.').concat(renderer.scopeName2inputType[toScope] or 'xu')
+        if outputFilePath = atom.showSaveDialogSync(filePath)
+          fs.writeFileSync(outputFilePath, result)
+          atom.workspace.open(outputFilePath)
+      else # just a buffer => replace contents & swap grammar
+        editor.setGrammar(atom.grammars.grammarForScopeName(toScope))
+        editor.setText(result)
+    catch error
+      console.error error
 
   autoFormat: ->
     return unless editor = @isActionable()
     renderer ?= require "./renderer"
-    renderer.translate editor.getText(), editor.getGrammar().scopeName, editor.getGrammar().scopeName, (error, result) ->
-      if error
-        console.error error
-      else
-        editor.setText(result)
+    try
+      result = renderer.translate editor.getText(), editor.getGrammar().scopeName, editor.getGrammar().scopeName
+      editor.setText(result)
+    catch error
+      console.error error
 
   toggle: ->
     return unless editor = @isActionable()
