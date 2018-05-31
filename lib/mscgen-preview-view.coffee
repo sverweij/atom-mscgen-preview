@@ -298,7 +298,7 @@ class MscGenPreviewView extends ScrollView
       if projectPath = atom.project.getPaths()[0]
         filePath = path.join(projectPath, filePath)
 
-    if outputFilePath = atom.showSaveDialogSync(filePath)
+    if outputFilePath = atom.applicationDelegate.showSaveDialog(filePath)
       if 'png' == pOutputType
         svgToRaster ?= require './svg-to-raster'
 
