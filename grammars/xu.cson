@@ -189,7 +189,7 @@ repository:
       }
     ]
   attributename:
-    match: "\\b(label|idurl|id|url|linecolor|linecolour|textcolor|textcolour|textbgcolor|textbgcolour|arclinecolor|arclinecolour|arctextcolor|arctextcolour|arctextbgcolor|arctextbgcolour|arcskip|title)\\b"
+    match: "\\b(label|idurl|id|url|linecolor|linecolour|textcolor|textcolour|textbgcolor|textbgcolour|arclinecolor|arclinecolour|arctextcolor|arctextcolour|arctextbgcolor|arctextbgcolour|arcskip|title|activate|deactivate|activation)\\b"
     name: "keyword.attribute.xu"
   attributevalue:
     patterns: [
