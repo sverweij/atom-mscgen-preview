@@ -1,7 +1,7 @@
 url      = require 'url'
 fs       = require 'fs-plus'
 path     = require 'path'
-mscgenjs = require 'mscgenjs/src/index-lazy'
+mscgenjs = require 'mscgenjs/dist/cjs/index-lazy'
 renderer = null
 
 MscGenPreviewView = null # Defer until used
