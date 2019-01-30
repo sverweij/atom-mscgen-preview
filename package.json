@@ -1,6 +1,6 @@
 {
   "name": "mscgen-preview",
-  "version": "1.12.14",
+  "version": "1.12.15",
   "main": "./lib/main",
   "description": "Write and preview sequence charts with MscGen and its brethren with `ctrl-shift-G`.",
   "repository": {
