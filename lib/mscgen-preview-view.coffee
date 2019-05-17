@@ -214,9 +214,10 @@ class MscGenPreviewView extends ScrollView
       if error
         @showError(error)
       else
+        SVG_DOCTYPE = '<!DOCTYPE svg [<!ENTITY nbsp "&#160;">]>';
         @loading = false
         @loaded = true
-        @svg = svg
+        @svg = SVG_DOCTYPE + svg
 
         @renderedSVG = @imageContainer.find('svg')
         @originalWidth = @renderedSVG.attr('width')
@@ -279,7 +280,6 @@ class MscGenPreviewView extends ScrollView
 
   copyToClipboard: ->
     return false if @loading or not @svg
-
     atom.clipboard.write(@svg)
 
     true
