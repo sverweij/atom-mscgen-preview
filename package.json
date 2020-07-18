@@ -24,12 +24,12 @@
   "dependencies": {
     "atom-space-pen-views": "2.2.0",
     "fs-plus": "3.1.1",
-    "mscgenjs": "4.0.2",
+    "mscgenjs": "5.0.0",
     "underscore-plus": "1.7.0",
-    "uuid": "3.3.3"
+    "uuid": "8.2.0"
   },
   "devDependencies": {
-    "eslint": "6.6.0",
+    "eslint": "7.4.0",
     "temp": "0.9.1"
   },
   "bugs": {
