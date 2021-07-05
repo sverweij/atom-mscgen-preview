@@ -24,13 +24,13 @@
   "dependencies": {
     "atom-space-pen-views": "2.2.0",
     "fs-plus": "3.1.1",
-    "mscgenjs": "5.0.0",
+    "mscgenjs": "6.0.1",
     "underscore-plus": "1.7.0",
-    "uuid": "8.2.0"
+    "uuid": "8.3.2"
   },
   "devDependencies": {
-    "eslint": "7.4.0",
-    "temp": "0.9.1"
+    "eslint": "7.30.0",
+    "temp": "0.9.4"
   },
   "bugs": {
     "url": "https://github.com/sverweij/atom-mscgen-preview/issues"
