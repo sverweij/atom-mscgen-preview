@@ -1,8 +1,16 @@
 # MscGen Preview
 
+<hr/>
+
+### :warning: status 2023-05-05: _archived_
+As the [atom editor is no more](https://github.blog/2022-06-08-sunsetting-atom/), this plugin is _archived_ and will be maintained anymore.
+
+<hr/>
+
 Write and preview sequence charts with MscGen and its brethren with `ctrl-shift-G`.
 
 Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` extensions.
+
 
 ![animated gif demoing live preview of a simple sequence chart](https://raw.githubusercontent.com/sverweij/atom-mscgen-preview/master/assets/atom-mscgen-preview.gif)
 
@@ -31,10 +39,3 @@ Enabled for `.mscgen`, `.msc`, `.mscin`, `.xu`, and `.msgenny` extensions.
 ## License information
 This software is free software [licensed under GPL-3.0](LICENSE.md). This means (a.o.) you _can_ use
 it as part of other free software, but _not_ as part of non free software.
-
-## Build status
-[![Build Status](https://travis-ci.org/sverweij/atom-mscgen-preview.svg?branch=master)](https://travis-ci.org/sverweij/atom-mscgen-preview)
-[![Build status](https://ci.appveyor.com/api/projects/status/wv47lflylhroa9wl?svg=true)](https://ci.appveyor.com/project/sverweij/atom-mscgen-preview)
-[![Code Climate](https://codeclimate.com/github/sverweij/atom-mscgen-preview/badges/gpa.svg)](https://codeclimate.com/github/sverweij/atom-mscgen-preview)
-[![Dependency Status](https://david-dm.org/sverweij/atom-mscgen-preview.svg)](https://david-dm.org/sverweij/atom-mscgen-preview)
-[![devDependency Status](https://david-dm.org/sverweij/atom-mscgen-preview/dev-status.svg)](https://david-dm.org/sverweij/atom-mscgen-preview#info=devDependencies)
